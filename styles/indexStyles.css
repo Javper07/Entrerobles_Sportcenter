@@ -2,7 +2,11 @@
 body {
   margin: 0;
   padding: 0;
-  background-image: url('../img/fondo_index.jpg');
+  background-image: url('../images/image_Nero_AI_Image_Upscaler_Photo_Face.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
     
 }
 
@@ -16,23 +20,26 @@ p {
 
 #header {
   width: 100%;
-  height: 140px;
-  background-color: #201403;
+  height: 120px;
+  background-color: #2023248f;
   display: flex;
   align-items: center;
+    
 }
 
 #header img {
-  height: 140px;
+  height: 120px;
   width: auto;
   margin-left: 20px;
+
+  
 }
 
 #header h1 {
   margin-left: 20px;
   font-family: 'Quantico', cursive;
   font-size: 40px;
-  color: #f1f1f1;
+  color: #e2e2e2;
   border-left: rgb(0, 0, 0) 2px solid;
   
   padding-top: 10px;
@@ -44,8 +51,8 @@ p {
   margin-left: auto;
   margin-right: 30px;
   
-  padding-top: 11px;
-  padding-bottom: 11px;
+  padding-top: 9px;
+  padding-bottom: 9px;
   padding-left: 10px;
   padding-right: 10px;
   height: 30px;
@@ -55,46 +62,19 @@ p {
   color: #ffffff;
   text-align: center; 
   font-style: italic;
+  text-decoration: none;
   }
 
-#Home{
-  color: white;
-  background-color: #DC2626;
-  border-radius: 5px;  
-  
-  border-radius: 12px; 
-}
-
-#logIn {
-  margin-left: auto;
-  margin-right: 30px;
-  
-  padding-top: 11px;
-  padding-bottom: 11px;
-  padding-left: 5px;
-  padding-right: 5px;
-  height: 30px;
-
-  font-family: 'Quantico', sans-serif;
-  font-size: 20px;
-  color: #DC2626;
-  text-align: center;
-}
-
-#logIn:hover {
+#ReserveNow {
+    background-color: #56361C;
     color: white;
-    background-color: #DC2626;
-    border-radius: 5px;   
+    border-radius: 10px; 
 }
 
-#bannerPista {
-    width: 100%;
-    height: 250px;
-    margin-top: 0px;
-    ;
-}
 
 section {
+    width: 100%;
+    height: auto;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -102,6 +82,8 @@ section {
     gap: 20px;
     margin-top: 20px;
     margin-bottom: 20px;
+
+   
     
 }
 
