@@ -7,6 +7,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   
+  
     
 }
 
@@ -16,6 +17,22 @@ p {
   color: white;
   padding-left: 20px;
   padding-right: 20px;
+}
+
+img{
+    border-top-left-radius: 7%;
+    border-top-right-radius: 7%;
+    height: 150px;
+    width: 200px;
+    
+}
+h3{
+    color: white;
+    font-family: 'Quantico', sans-serif;
+    font-size: 18px;
+    text-align: center;
+    width: 200px;
+    height: auto;
 }
 
 #header {
@@ -73,78 +90,80 @@ p {
 
 
 #principalTitle {
-    width: 65%;
-    height: auto;
-    justify-content: center;
-    align-items: center;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 20px;
+  width: 65%;
+  height: auto;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 100px;
+  margin-bottom: 100px;
+  padding: 20px;
 
-    border-radius: 20px;
+  border-radius: 20px;
 
-    background-color: #2023248f;
+  background-color: #202324b6;
 }
 #principalTitle h2 {
-    color: white;
-    font-family: 'Quantico', sans-serif;
-    font-size: 70px;
-    text-align: center;
+  color: white;
+  font-family: 'Quantico', sans-serif;
+  font-size: 70px;
+  text-align: center;
     
 }
 
 #principalTitle h4 {
-    color: white;
-    font-family: 'Quantico', sans-serif;
-    font-size: 24px;
-    text-align: center;
-    padding: 20px;
+  color: white;
+  font-family: 'Quantico', sans-serif;
+  font-size: 24px;
+  text-align: center;
+  padding: 20px;
     
 }
 
 #instalationsContainer {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  
+  margin-bottom: 40px;
     
 }
 
-.instalation {
-    background-color: #5f5f5fcb;
-    width: 200px;
-    border-radius: 20px;
-    position: relative;
-    
-    display: flex;
-    flex-direction: wrap;
-    flex-wrap: wrap;
+.instalacion {
+  background-color: #5f5f5fce;
+  width: 200px;
+  border-radius: 20px;
+  position: absolute;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-    margin: auto;
-
-            
+  margin: auto;
+     
 }
 
 #principalButtons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
     
 }
 
 #principalButtons button {
-    padding: 10px 20px;
+  padding: 10px 20px;
     
 } 
 
 #instalacionButton{
-    background-color: #6B4423;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: default;
+  background-color: #6B4423;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: default;
 }
 
 #instalacionButton:hover {
@@ -179,91 +198,99 @@ p {
     box-shadow: #ffffff 0px 0px 10px;
 }
 
+
 .sectionTitle {
-    width: 100%;
-    height: auto;
-    align-items: center;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 40px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: auto;
-    margin-right: auto;
+  width: 100%;
+  height: auto;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
 
 }
 
-.container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+.sectionTitle h2 { 
+  color: white; 
+  font-family: 'Quantico', sans-serif; 
+  font-size: 40px; 
+  text-align: center; 
 }
 
-.container article {
-    margin-top: auto;
-    background-color: #42414d3f;
-    width: 200px;
-    border-radius: 7%;
-    position: relative;
+.instalacionesSection {
+  background-color: #2023248f; 
+  width: 80%; 
+  margin-left: auto; 
+  margin-right: auto;
+  
+  display: flex; 
+  justify-content: center; 
+  flex-wrap: wrap;
+  gap: 40px; 
+  margin-bottom: 40px;
+}
+
+.instalacionesSection .instalation { 
+  width: 200px; 
+  border-radius: 20px; 
+  position: relative; 
+  display: flex; 
+  flex-direction: wrap; 
+  flex-wrap: wrap; 
+  margin: auto; 
+}
+
+#instalaciones{
+  background-color: #202324; 
+  width: 100%; 
+  margin-left: auto; 
+  margin-right: auto;
+
+  align-items: center;
+}
+
+#instalacionesTitle {
+  align-items: center;
     
 
-    display: flex;
-    flex-direction: wrap;
-    flex-wrap: wrap;
-            
 }
 
-.container article:hover {
-    background-color: #5c5b6a;
-    cursor: pointer;
-    transform: scale(1.1);
-    transition: all 0.2s ;
+#instalacionesTitle h2 {
+  color: white;
+  font-family: 'Quantico', sans-serif;
+  font-size: 40px;
+  text-align: center;
+  padding-top: 20px;
+}
+#instalacionesTitle p {
+  color: white;
+  font-family: 'Quantico', sans-serif;
+  font-size: 18px;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 20px;
 }
 
-article div {
-    padding-left: 15px;
-    padding-bottom: 2px;
-    
-    
-    display: flex;
-    align-items: center;
-    
-}
-
-img{
-    border-top-left-radius: 7%;
-    border-top-right-radius: 7%;
-    height: 150px;
-    width: 200px;
-    
-}
-h3{
-    color: white;
-    font-family: 'Quantico', sans-serif;
-    font-size: 18px;
-    text-align: center;
-    width: 200px;
-    height: auto;
-}
 
 #footer {
-    width: 100%;
-    height: 100px;
-    background-color: #2023248f;
-    margin-top: 30px;
-    color: white;
-    font-family: quantico, sans-serif;
-    padding-left: 20px;
-    padding-top: 10px;
-    height: 150px;
+  width: 100%;
+  height: 100px;
+  background-color: #2023248f;
+  margin-top: 30px;
+  color: white;
+  font-family: quantico, sans-serif;
+  padding-left: 20px;
+  padding-top: 10px;
+  height: 150px;
 }
 li {
-    list-style: none;
-    margin-top: 10px;
-    text-decoration: none;
+  list-style: none;
+  margin-top: 10px;
+  text-decoration: none;
 }
 
 .footer {
