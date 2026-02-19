@@ -12,7 +12,7 @@ body {
 }
 
 p {
-  font-family: 'Quantico', sans-serif;
+  font-family: 'Lexend', sans-serif;
   font-size: 18px;
   color: white;
   padding-left: 20px;
@@ -28,7 +28,7 @@ img{
 }
 h3{
     color: white;
-    font-family: 'Quantico', sans-serif;
+    font-family: 'Lexend', sans-serif;
     font-size: 18px;
     text-align: center;
     width: 200px;
@@ -74,7 +74,7 @@ h3{
   padding-right: 10px;
   height: 30px;
 
-  font-family: 'Quantico', sans-serif;
+  font-family: 'quantico', sans-serif;
   font-size: 20px;
   color: #ffffff;
   text-align: center; 
@@ -106,7 +106,7 @@ h3{
 }
 #principalTitle h2 {
   color: white;
-  font-family: 'Quantico', sans-serif;
+  font-family: 'quantico', sans-serif;
   font-size: 70px;
   text-align: center;
     
@@ -114,7 +114,7 @@ h3{
 
 #principalTitle h4 {
   color: white;
-  font-family: 'Quantico', sans-serif;
+  font-family: 'lexend', sans-serif;
   font-size: 24px;
   text-align: center;
   padding: 20px;
@@ -125,7 +125,7 @@ h3{
   display: flex;
   justify-content: center;
   
-  margin-bottom: 40px;
+  margin-bottom: 4  0px;
     
 }
 
@@ -199,7 +199,7 @@ h3{
 }
 
 
-.sectionTitle {
+.sectionTitle_instalaciones {
   width: 100%;
   height: auto;
   align-items: center;
@@ -214,65 +214,61 @@ h3{
 
 }
 
-.sectionTitle h2 { 
+.sectionTitle_instalaciones h2 { 
   color: white; 
-  font-family: 'Quantico', sans-serif; 
+  font-family: 'lexend', sans-serif; 
   font-size: 40px; 
   text-align: center; 
 }
 
-.instalacionesSection {
-  background-color: #2023248f; 
-  width: 80%; 
-  margin-left: auto; 
-  margin-right: auto;
-  
+
+
+#section_widgets_deportes{
   display: flex; 
   justify-content: center; 
   flex-wrap: wrap;
-  gap: 40px; 
+  gap: 40px;
+
+ margin: auto;
+}
+
+.container_widgets_deportes {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
   margin-bottom: 40px;
 }
 
-.instalacionesSection .instalation { 
-  width: 200px; 
-  border-radius: 20px; 
-  position: relative; 
-  display: flex; 
-  flex-direction: wrap; 
-  flex-wrap: wrap; 
-  margin: auto; 
-}
+.widget_deporte {
+  background-color: #353535ce;
+  width: 900px;
+  border-radius: 20px;
+  position: relative;
+ 
+  
+  display: flex;
+  
+  flex-direction:row;
+  align-items: center;
 
-#instalaciones{
-  background-color: #202324; 
-  width: 100%; 
-  margin-left: auto; 
+  margin-bottom: 30px;
+  margin-left: auto;
   margin-right: auto;
 
-  align-items: center;
+  transition: all 0.3s ease-out;
+  transform: translate3d(0px,0px, 0);
+}
+.widget_deporte img {
+  width: 300px;
+  height: 200px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
 }
 
-#instalacionesTitle {
-  align-items: center;
-    
-
-}
-
-#instalacionesTitle h2 {
-  color: white;
-  font-family: 'Quantico', sans-serif;
-  font-size: 40px;
-  text-align: center;
-  padding-top: 20px;
-}
-#instalacionesTitle p {
-  color: white;
-  font-family: 'Quantico', sans-serif;
-  font-size: 18px;
-  text-align: center;
-  padding-top: 10px;
-  padding-bottom: 20px;
+.widget_deporte:hover {
+  box-shadow: #ffffff 0px 0px 15px;
+  transform: translate3d(20px, -10px, 0);
+  transition: all 0.3s ease;
 }
 
 

@@ -10,6 +10,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <title>Polideportivo Municipal — Entrerobles</title>
+
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+    </style>
 </head>
 <body>
 
@@ -31,7 +35,7 @@
     <!--Sección de las instalaciones deportivas-->
    
 
-    <div class="sectionTitle">   
+    <div class="sectionTitle_instalaciones">   
         <div id="principalTitle">
             <h2>Bienvenido al polideportivo municipal de Entrerobles</h2>
             
@@ -62,28 +66,34 @@
 
     <!--INSTALACIONES-->
 
-    <section id = "instalaciones">
-        <div id="instalacionesTitle"> 
-            <h2>NUESTRA INSTALACIONES</h2>
-            <p>Espacios deportivos modernos y bien equipados para todos los usuarios.</p>
+    <div class="sectionTitle_instalations" style="margin-top: 50px;"  >
+         <h3>Nuestras instalaciones deportivas</h3>
+    </div>
+
+    <section id="section_widgets_deportes">
+        <div class="container_widget_deporte">
+            <div class="widget_deporte">
+                <img src="images/gymInterior.jpeg" alt="Imagen del gimnasio" class="widget_image">
+                <p>Equipado con máquinas de última generación para entrenamiento de fuerza y cardio.</p>
+            </div>
+            <div class="widget_deporte">
+                <img src="images/poolInterior.jpeg" alt="Imagen de la piscina interior" class="widget_image">
+                <p>Ideal para natación, clases de aquagym y actividades acuáticas durante todo el año.</p>
+            </div>
+        </div>  
+
+        <div class="container_widget_deporte">
+            <div class="widget_deporte">
+                <img src="images/sportCourt.jpeg" alt="Imagen de la pistas" class="widget_image">
+                <p>Disponemos de pistas para fútbol, baloncesto, tenis y pádel, perfectas para tus partidos y entrenamientos.</p>
+            </div>  
+
+            <div class="widget_deporte">
+                 <img src="images/yogaRoom.jpeg" alt="Imagen de la sala de yoga" class="widget_image">
+                <p>Espacios versátiles para clases de yoga, pilates, zumba y otras actividades grupales.</p>
+            </div>
         </div>
-        <div id="instalacionesContainer">
-            <div class="instalacion">
-                <img src="Images/gymInterior.jpeg" alt="Gimnasio Moderno">
-                <h3>Gimnasio Moderno</h3>
-                <p>Equipado con máquinas de última generación para entrenamiento cardiovascular y de fuerza.</p>
-            </div>
-            <div class="instalacion">
-                <img src="Images/poolInterior.jpeg" alt="Piscina Climatizada">
-                <h3>Piscina Climatizada</h3>
-                <p>Ideal para natación recreativa, clases de aquagym y entrenamiento de natación.</p>
-            </div>
-            <div class="instalacion">
-                <img src="Images/sportCourt.jpeg" alt="Pistas Deportivas">
-                <h3>Pistas Deportivas</h3>
-                <p>Cancha de baloncesto, fútbol sala y pista de tenis para actividades deportivas al aire libre.</p>
-            </div>
-        </div>
+
     </section>
 
     <!--Footer de la web-->
