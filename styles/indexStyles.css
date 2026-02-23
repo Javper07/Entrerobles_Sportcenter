@@ -1,14 +1,10 @@
-
 body {
   margin: 0;
   padding: 0;
   background-image: url('../images/image_Nero_AI_Image_Upscaler_Photo_Face.jpeg');
   background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  
-  
-    
+  background-attachment: fixed;
+ 
 }
 
 p {
@@ -27,21 +23,27 @@ img{
     
 }
 h3{
-    color: white;
-    font-family: 'Lexend', sans-serif;
-    font-size: 18px;
-    text-align: center;
-    width: 200px;
-    height: auto;
+  color: white;
+  font-family: 'Lexend', sans-serif;
+  font-size: 18px;
+  text-align: center;
+  width: 200px;
+  height: auto;
 }
 
 #header {
-  width: 100%;
+  width: 99%;
   height: 120px;
-  background-color: #2023248f;
+  background-color: #202324fa;
   display: flex;
   align-items: center;
-    
+  border-radius: 20px;
+
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+
 }
 
 #header img {
@@ -87,23 +89,26 @@ h3{
     color: white;
     border-radius: 10px; 
 }
-
+/*
+    SECCION PRINCIPAL DE LA WEB
+*/
 
 #principalTitle {
-  width: 65%;
+  width: 75%;
   height: auto;
   justify-content: center;
   align-items: center;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 100px;
-  margin-bottom: 100px;
+  margin-top: 220px;
+  margin-bottom: 150px;
   padding: 20px;
 
   border-radius: 20px;
 
   background-color: #202324b6;
 }
+
 #principalTitle h2 {
   color: white;
   font-family: 'quantico', sans-serif;
@@ -129,17 +134,18 @@ h3{
     
 }
 
-.instalacion {
+.instalation {
   background-color: #5f5f5fce;
   width: 200px;
   border-radius: 20px;
-  position: absolute;
+  position: relative;
   
   display: flex;
   flex-direction: column;
   align-items: center;
 
   margin: auto;
+  margin-bottom: 40px;
      
 }
 
@@ -221,6 +227,24 @@ h3{
   text-align: center; 
 }
 
+#instalacionesWidgetsTitle {
+  display: flex; 
+  justify-content: center; 
+  
+  gap: 40px;
+
+  background-color: #202324da;
+}
+
+#instalacionesWidgetsTitle h3 {
+  color: white; 
+  font-family: 'Lexend', sans-serif; 
+  font-size: 42px; 
+  text-align: center; 
+  width: auto; 
+  height: auto;
+}
+
 
 
 #section_widgets_deportes{
@@ -230,6 +254,7 @@ h3{
   gap: 40px;
 
  margin: auto;
+ background-color: #202324da;
 }
 
 .container_widgets_deportes {
@@ -251,13 +276,15 @@ h3{
   flex-direction:row;
   align-items: center;
 
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   margin-left: auto;
   margin-right: auto;
 
   transition: all 0.3s ease-out;
   transform: translate3d(0px,0px, 0);
 }
+
+
 .widget_deporte img {
   width: 300px;
   height: 200px;
@@ -271,29 +298,83 @@ h3{
   transition: all 0.3s ease;
 }
 
+/*
+    SECCION DE LOS HORARIOS DE LAS INSTALACIONES
+*/
 
-#footer {
-  width: 100%;
-  height: 100px;
-  background-color: #2023248f;
-  margin-top: 30px;
-  color: white;
-  font-family: quantico, sans-serif;
-  padding-left: 20px;
-  padding-top: 10px;
-  height: 150px;
+#horariosTitle {
+  display: flex; 
+  justify-content: center; 
+  
+  gap: 40px;
+
+  
+
 }
+
+#horariosTitle h2 {
+  color: white; 
+  font-family: 'Lexend', sans-serif; 
+  font-size: 42px; 
+  text-align: center; 
+  width: auto; 
+  height: auto;
+}
+
+#horariosContainer {
+  display: flex; 
+  justify-content: center; 
+  flex-wrap: wrap;
+  gap: 40px;
+
+ margin: auto;
+ margin-bottom: 30px;
+}
+
+.horario {
+  background-color: #353535ce;
+  width: 800px;
+  border-radius: 25px;
+  position: relative;
+ 
+  display: flex;
+  
+  flex-direction:column ;
+  align-items: center;
+
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+.horario h4 {
+  color: white; 
+  font-family: 'Lexend', sans-serif; 
+  font-size: 24px; 
+  text-align: center; 
+  width: auto; 
+  height: auto;
+}
+
+
+
+
+/*
+    FOOTER DE LA WEB
+ */
+
+.footer {
+  background: #202324e7;
+  color: #ffffff;
+  padding: 60px 50px;
+  font-family: Arial, sans-serif;
+}
+
 li {
   list-style: none;
   margin-top: 10px;
   text-decoration: none;
-}
-
-.footer {
-  background: #2023248f;
-  color: #ffffff;
-  padding: 60px 50px;
-  font-family: Arial, sans-serif;
 }
 
 .footer-container {

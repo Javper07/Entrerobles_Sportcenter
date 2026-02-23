@@ -9,11 +9,11 @@
     <!--Fuentes de la web-->
     <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <title>Polideportivo Municipal — Entrerobles</title>
-
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
     </style>
+
+    <title>Polideportivo Municipal — Entrerobles</title>
 </head>
 <body>
 
@@ -23,10 +23,9 @@
         <h1>POLIDEPORTIVO ENTREROBLES</h1>
         <div id="headerButtons" style="margin-left: auto;">
             <a href="index.html" id="Home" class="HeaderButton">INICIO</a>
-            <a href="index.html" id="Instalations" class="HeaderButton">INSTALACIONES</a>
-            <a href="index.html" id="Schools" class="HeaderButton">ACTIVIDADES</a>
-            <a href="index.html" id="Schedules" class="HeaderButton">HORARIOS</a>
-            <a href="index.html" id="ReserveNow" class="HeaderButton">RESERVE YA</a>
+            <a href="#instalacionesWidgetsTitle" id="Instalations" class="HeaderButton">INSTALACIONES</a>
+            <a href="#horariosTitle" id="Schedules" class="HeaderButton">HORARIOS</a>
+            <a href="reservas.html" id="ReserveNow" class="HeaderButton">RESERVE YA</a>
         </div>
     </div>
     
@@ -37,7 +36,7 @@
 
     <div class="sectionTitle_instalaciones">   
         <div id="principalTitle">
-            <h2>Bienvenido al polideportivo municipal de Entrerobles</h2>
+            <h2>BIENVENIDO AL POLIDEPORTIVO ENTREROBLES</h2>
             
             <h4>Descubre nuestras instalaciones deportivas y reserva tu espacio</h4>
            
@@ -59,15 +58,15 @@
 
             <div id="principalButtons">
                 <button id="instalacionButton">Descubre nuestras instalaciones</button>
-                <button id="horariosButton">Horarios</button>
+                <button id="horariosButton" href="#horariosTitle">Horarios</button>
             </div>
         </div>
     </div>
 
     <!--INSTALACIONES-->
 
-    <div class="sectionTitle_instalations" style="margin-top: 50px;"  >
-         <h3>Nuestras instalaciones deportivas</h3>
+    <div id="instalacionesWidgetsTitle">
+         <h3>NUESTRAS INSTALACIONES DEPORTIVAS</h3>
     </div>
 
     <section id="section_widgets_deportes">
@@ -95,6 +94,33 @@
         </div>
 
     </section>
+
+    <!--Seccion de los horarios de las instalaciones-->
+
+    <div id="horariosTitle">
+        <h2>HORARIOS DE NUESTRAS INSTALACIONES</h2>
+    </div>
+
+    <div id="horariosContainer">
+        <div class="horario">
+            <h4>Gimnasio</h4>
+            <p>Lunes a Viernes: 6:00 - 22:00</p>
+            <p>Sábados: 8:00 - 20:00</p>
+            <p>Domingos: 8:00 - 18:00</p>
+        </div>
+        <div class="horario">
+            <h4>Piscina</h4>
+            <p>Lunes a Viernes: 7:00 - 21:00</p>
+            <p>Sábados: 9:00 - 19:00</p>
+            <p>Domingos: 9:00 - 17:00</p>
+        </div>
+        <div class="horario">
+            <h4>Pistas Deportivas</h4>
+            <p>Lunes a Viernes: 6:00 - 22:00</p>
+            <p>Sábados: 8:00 - 20:00</p>
+            <p>Domingos: 8:00 - 18:00</p>
+        </div>
+    </div>
 
     <!--Footer de la web-->
     <footer class="footer">
@@ -161,5 +187,3 @@
     
 </body>
 </html>
-
-<!--Pasar la imagen del logo white a svg-->
