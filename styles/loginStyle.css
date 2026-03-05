@@ -1,0 +1,16 @@
+body{
+    background-image: url('../images/loginBackground.jpeg');
+    background-size: cover;
+    font-family: Arial, sans-serif;
+}
+
+
+#login-container {
+    width: 300px;
+    margin: 100px auto;
+    padding: 20px;
+    background-color: rgba(138, 29, 29, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+}
