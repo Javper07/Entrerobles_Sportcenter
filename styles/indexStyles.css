@@ -3,7 +3,7 @@ body {
   padding: 0;
   background-image: url('../images/image_Nero_AI_Image_Upscaler_Photo_Face.jpeg');
   background-size: cover;
-  background-attachment: fixed;
+ font-family: 'Lexend', sans-serif;
  
 }
 
@@ -22,6 +22,7 @@ img{
     width: 200px;
     
 }
+
 h3{
   color: white;
   font-family: 'Lexend', sans-serif;
@@ -31,6 +32,11 @@ h3{
   height: auto;
 }
 
+a {
+  text-decoration: underline;
+  color: white;
+}
+
 #header {
   width: 99%;
   height: 120px;
@@ -38,11 +44,9 @@ h3{
   display: flex;
   align-items: center;
   border-radius: 20px;
+    margin: auto;
+    margin-top: 20px;
 
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 1000;
 
 }
 
@@ -100,7 +104,7 @@ h3{
   align-items: center;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 220px;
+  margin-top: 80px;
   margin-bottom: 150px;
   padding: 20px;
 
@@ -146,7 +150,6 @@ h3{
 
   margin: auto;
   margin-bottom: 40px;
-     
 }
 
 #principalButtons {
@@ -204,7 +207,6 @@ h3{
     box-shadow: #ffffff 0px 0px 10px;
 }
 
-
 .sectionTitle_instalaciones {
   width: 100%;
   height: auto;
@@ -245,8 +247,6 @@ h3{
   height: auto;
 }
 
-
-
 #section_widgets_deportes{
   display: flex; 
   justify-content: center; 
@@ -284,7 +284,6 @@ h3{
   transform: translate3d(0px,0px, 0);
 }
 
-
 .widget_deporte img {
   width: 300px;
   height: 200px;
@@ -307,8 +306,6 @@ h3{
   justify-content: center; 
   
   gap: 40px;
-
-  
 
 }
 
@@ -357,9 +354,6 @@ h3{
   height: auto;
 }
 
-
-
-
 /*
     FOOTER DE LA WEB
  */
@@ -386,7 +380,7 @@ li {
 
 .footer-column h3 {
   color: #ff9a3c;
-  font-size: 14px;
+  font-size: 18px;
   margin-bottom: 15px;
   width: 20PX;
 }
@@ -402,32 +396,33 @@ li {
   opacity: 0.9;
 }
 
-.logo-area {
-  max-width: 260px;
-  text-align: left;
-}
-
-.footer-logo {
-  width: 115px;
+#footer_logo {
+  width: 110px;
   align-items: center;
-  }
-
-
+  margin-left: 50px;
+}
 
 .footer-buttons {
-  margin-top: 15px;
+  display: flex;
+  margin-top: 20px;
+
+  flex-direction: column;
+  align-items: center;
 }
+
 
 .footer-buttons a {
   margin-right: 15px;
   text-decoration: none;
-  color: #ff9a3c;
+  color: #ffffff;
   font-weight: bold;
+
+  margin: 10px 0;
 }
 
 .create-account {
   background: #ff7f32;
-  color: #ffffff !important;
+  color: #ffffff ;
   padding: 4px 4px;
   border-radius: 3px;
 }

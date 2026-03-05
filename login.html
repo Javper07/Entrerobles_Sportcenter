@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Styles/loginStyles.css">
+    <style>@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');</style>
+    <title>Inicio de Sesión — Ayuntamiento de Entrerobles</title>
+</head>
+<body>
+    <div>
+
+    
+    </div>
+    <div id="login-container"> 
+        <img id="unknownUserImage" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Usuario Desconocido">     
+        <div class="login-form">
+            <h2>Iniciar Sesión</h2>
+            <form action="login.php" method="POST">
+                <input type="text" name="usuario" placeholder="Correo o Nombre de Usuario" required>
+                <input type="password" name="password" placeholder="Contraseña" required>
+                <input type="password" name="confirm_password" placeholder="Confirmar Contraseña" required>
+                <div class="remember-container">
+                   <input type="checkbox" id="remember-me" name="remember">
+                    <label for="remember-me">Remember me</label>
+                </div>
+                <button type="submit" class="submit">Ingresar</button>
+            </form>
+        </div>
+        <div class="option-container">
+            <a href="register.html">Regístrate aquí</a>
+            <a href="forgot_password.html">Recuperar Contraseña</a>
+        </div>
+    </div>
+</body>
+</html>

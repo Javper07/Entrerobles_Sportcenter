@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Styles/loginStyles.css">
+    <title>Resgistro — Ayuntamiento de Entrerobles</title>
+    <style>@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');</style>
+</head>
+<body>
+    <div id="login-container"> 
+        <img id="unknownUserImage" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Usuario Desconocido">     
+        <div class="login-form">
+            <h2>Registrarse</h2>
+            <form action="register.php" method="POST">
+                <input type="text" name="usuario" placeholder=" Nombre de Usuario" required>
+                <input type="text" name="mail" placeholder="Correo Electrónico" required>
+                <div class="contact-container" id="contact-container">
+                    <select name="prefijo" aria-label="Prefijo internacional">
+                        <option value="+34" selected>🇪🇸 +34</option>
+                        <option value="+33">🇫🇷 +33</option>
+                        <option value="+351">🇵🇹 +351</option>
+                        <option value="+44">🇬🇧 +44</option>
+                        <option value="+1">🇺🇸 +1</option>
+                    </select>
+                    <input type="tel" id="telefono" name="telefono" placeholder="600000000" pattern="[0-9]{9,15}" required>
+                </div>
+                <input type="password" name="password" placeholder="Contraseña" required>
+                <input type="password" name="confirm_password" placeholder="Confirmar Contraseña" required>
+                <div class="remember-container">
+                   <input type="checkbox" id="remember-me" name="remember">
+                    <label for="remember-me">Recuerdame</label>
+                </div>
+                <button type="submit" class="submit">Ingresar</button>
+            </form>
+        </div>
+        <div class="option-container">
+            <a href="login.html">Iniciar Sesión  </a>
+            <a href="forgot_password.html">Recuperar Contraseña</a>
+        </div>
+    </div>
+</body>
+</html>
