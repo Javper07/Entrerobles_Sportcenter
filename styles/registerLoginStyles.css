@@ -6,11 +6,10 @@ body{
 
 #login-container{
     width: 600px;
-    margin: 150px auto;
+    margin: 60px auto;
     background-color: rgba(68, 68, 68, 0.26);
     backdrop-filter: blur(10px);
 
-    
     border-radius: 10px;
     box-shadow: 0 0 10px rgb(0, 0, 0);
 

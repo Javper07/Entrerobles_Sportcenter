@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +15,7 @@
         <h1>POLIDEPORTIVO ENTREROBLES</h1>
         <div id="headerButtons" style="margin-left: auto;">
             <a href="index.html" id="Home" class="HeaderButton">INICIO</a>
-            <a href="index.html " id="Instalations" class="HeaderButton">INSTALACIONES</a>
+            <a href="index.html" id="Instalations" class="HeaderButton">INSTALACIONES</a>
             <a href="index.html" id="Schedules" class="HeaderButton">HORARIOS</a>
             <a href="reservas.html" id="ReserveNow" class="HeaderButton">RESERVE YA</a>
         </div>
@@ -23,19 +23,38 @@
 
     <main class="main-content">
       <div class="container">
+
+        <!-- Mensaje de éxito o error -->
+        <div id="msg-reserva-ok" class="alert alert-success" style="display:none;">
+          ✅ ¡Reserva enviada correctamente! Recibirás un email de confirmación.
+        </div>
+        <div id="msg-reserva-error" class="alert alert-error" style="display:none;">
+          ❌ Ha ocurrido un error al enviar la reserva. Inténtalo de nuevo.
+        </div>
+
         <div class="grid">
           <!-- Formulario de Reserva -->
           <div class="form-section">
             <div class="card">
               <h2 class="section-title">Nueva Reserva</h2>
               
-              <form class="form">
+              <!-- 
+                CAMBIOS REALIZADOS:
+                1. Añadido action="procesar_reserva.php" y method="POST"
+                2. Todos los campos tienen atributo name=""
+                3. Los campos obligatorios tienen required
+                4. El selector de horas ahora es un rango (inicio → fin)
+                5. hora_inicio y hora_fin se guardan en inputs hidden para el backend
+              -->
+              <form class="form" action="procesar_reserva.php" method="POST" id="formReserva">
+
                 <!-- Selección de Instalación -->
                 <div class="form-group">
                   <label class="form-label">Seleccione la instalacion a reservar:</label>
                   <div class="instalations-grid">
+
                     <label class="instalation-card">
-                      <input type="radio" name="instalacion" value="piscina" class="instalation-input">
+                      <input type="radio" name="instalacion" value="piscina" class="instalation-input" required>
                       <div class="instalation-content">
                         <p class="instalation-name">Piscina Cubierta</p>
                       </div>
@@ -75,6 +94,7 @@
                         <p class="instalation-name">Pistas de Pádel</p>
                       </div>
                     </label>
+
                   </div>
                 </div>
 
@@ -89,91 +109,33 @@
                     </svg>
                     Fecha de la reserva
                   </label>
-                  <input type="date" id="fecha" class="form-input">
+                  <!-- CORREGIDO: añadido name="fecha" y required -->
+                  <input type="date" id="fecha" name="fecha" class="form-input" required>
                 </div>
 
-                <!-- Horario -->
-                <div class="form-group">
-                  <label class="form-label">
-                    <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <polyline points="12 6 12 12 16 14"></polyline>
-                    </svg>
-                    Horario disponible
-                  </label>
-                  <div class="time-slots">
-                    <label class="time-slot">
-                      <input type="radio" name="horario" value="08:00" class="time-input">
-                      <div class="time-content">08:00</div>
+                <!-- Horario: hora de inicio y hora de fin -->
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="hora_inicio" class="form-label">
+                      <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                      </svg>
+                      Hora de inicio
                     </label>
-                    <label class="time-slot">
-                      <input type="radio" name="horario" value="09:00" class="time-input">
-                      <div class="time-content">09:00</div>
-                    </label>
-                    <label class="time-slot">
-                      <input type="radio" name="horario" value="10:00" class="time-input">
-                      <div class="time-content">10:00</div>
-                    </label>
-                    <label class="time-slot">
-                      <input type="radio" name="horario" value="11:00" class="time-input">
-                      <div class="time-content">11:00</div>
-                    </label>
-                    <label class="time-slot">
-                      <input type="radio" name="horario" value="12:00" class="time-input">
-                      <div class="time-content">12:00</div>
-                    </label>
-                    <label class="time-slot">
-                      <input type="radio" name="horario" value="13:00" class="time-input">
-                      <div class="time-content">13:00</div>
-                    </label>
-                    <label class="time-slot">
-                      <input type="radio" name="horario" value="14:00" class="time-input">
-                      <div class="time-content">14:00</div>
-                    </label>
-                    <label class="time-slot">
-                      <input type="radio" name="horario" value="15:00" class="time-input">
-                      <div class="time-content">15:00</div>
-                    </label>
-                    <label class="time-slot">
-                      <input type="radio" name="horario" value="16:00" class="time-input">
-                      <div class="time-content">16:00</div>
-                    </label>
-                    <label class="time-slot">
-                      <input type="radio" name="horario" value="17:00" class="time-input">
-                      <div class="time-content">17:00</div>
-                    </label>
-                    <label class="time-slot">
-                      <input type="radio" name="horario" value="18:00" class="time-input">
-                      <div class="time-content">18:00</div>
-                    </label>
-                    <label class="time-slot">
-                      <input type="radio" name="horario" value="19:00" class="time-input">
-                      <div class="time-content">19:00</div>
-                    </label>
-                    <label class="time-slot">
-                      <input type="radio" name="horario" value="20:00" class="time-input">
-                      <div class="time-content">20:00</div>
-                    </label>
-                    <label class="time-slot">
-                      <input type="radio" name="horario" value="21:00" class="time-input">
-                      <div class="time-content">21:00</div>
-                    </label>
-                    <label class="time-slot">
-                      <input type="radio" name="horario" value="22:00" class="time-input">
-                      <div class="time-content">22:00</div>
-                    </label>
+                    <input type="time" id="hora_inicio" name="hora_inicio" class="form-input" min="08:00" max="22:00" required>
                   </div>
-                </div>
 
-                <!-- Duración -->
-                <div class="form-group">
-                  <label for="duracion" class="form-label">Duración (horas)</label>
-                  <select id="duracion" class="form-input">
-                    <option value="1">1 hora</option>
-                    <option value="1.5">1.5 horas</option>
-                    <option value="2">2 horas</option>
-                    <option value="3">3 horas</option>
-                  </select>
+                  <div class="form-group">
+                    <label for="hora_fin" class="form-label">
+                      <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                      </svg>
+                      Hora de fin
+                    </label>
+                    <input type="time" id="hora_fin" name="hora_fin" class="form-input" min="08:00" max="22:00" required>
+                  </div>
                 </div>
 
                 <!-- Datos Personales -->
@@ -183,17 +145,20 @@
                   <div class="form-row">
                     <div class="form-group">
                       <label for="nombre" class="form-label">Nombre completo</label>
-                      <input type="text" id="nombre" class="form-input" placeholder="Tu nombre">
+                      <!-- CORREGIDO: añadido name="nombre" y required -->
+                      <input type="text" id="nombre" name="nombre" class="form-input" placeholder="Tu nombre" required>
                     </div>
 
                     <div class="form-group">
                       <label for="telefono" class="form-label">Teléfono</label>
-                      <input type="tel" id="telefono" class="form-input" placeholder="+34 000 000 000">
+                      <!-- CORREGIDO: añadido name="telefono" -->
+                      <input type="tel" id="telefono" name="telefono" class="form-input" placeholder="+34 000 000 000">
                     </div>
 
                     <div class="form-group">
                       <label for="email" class="form-label">Email</label>
-                      <input type="email" id="email" class="form-input" placeholder="tu@email.com">
+                      <!-- CORREGIDO: añadido name="email" y required -->
+                      <input type="email" id="email" name="email" class="form-input" placeholder="tu@email.com" required>
                     </div>
 
                     <div class="form-group">
@@ -206,7 +171,8 @@
                         </svg>
                         Nº Participantes
                       </label>
-                      <input type="number" id="participantes" min="1" max="50" class="form-input" placeholder="1">
+                      <!-- CORREGIDO: añadido name="participantes" y required -->
+                      <input type="number" id="participantes" name="participantes" min="1" max="50" class="form-input" placeholder="1" required>
                     </div>
                   </div>
                 </div>
@@ -214,7 +180,8 @@
                 <!-- Observaciones -->
                 <div class="form-group">
                   <label for="observaciones" class="form-label">Observaciones (opcional)</label>
-                  <textarea id="observaciones" rows="3" class="form-textarea" placeholder="Información adicional sobre tu reserva..."></textarea>
+                  <!-- CORREGIDO: añadido name="observaciones" -->
+                  <textarea id="observaciones" name="observaciones" rows="3" class="form-textarea" placeholder="Información adicional sobre tu reserva..."></textarea>
                 </div>
 
                 <!-- Botón de envío -->
@@ -262,7 +229,7 @@
             <!-- Contacto -->
             <div class="card">
               <h3 class="card-title">¿Necesitas ayuda?</h3>
-              <a  class="contact-link">
+              <a class="contact-link">
                 <div class="contact-icon">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
@@ -276,11 +243,12 @@
               </a>
             </div>
           </div>
+
         </div>
       </div>
     </main>
     
-    <!--Footer de la web-->
+    <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
 
@@ -289,14 +257,12 @@
                 <p>+34 625 32 45 12</p>
                 <p>info@aytoentrerobles.com</p>
             </div>
-
-            
             
             <div class="footer-column">
                 <h3>HOME</h3>
                 <ul>
                     <a href="index.html"><li>Inicio</li></a>
-                    <a href="login.html"><li>Cuenta </li></a>
+                    <a href="login.html"><li>Cuenta</li></a>
                     <a href="reservas.html"><li>Reservas</li></a>
                     <a href="#horariosTitle"><li>Horarios</li></a>
                     <a href="#instalacionesWidgetsTitle"><li>Instalaciones</li></a>
@@ -309,24 +275,32 @@
                     <li>Compañia</li>
                     <li>Origenes</li>
                     <li>¿Buscas trabajo?</li>
-                    
                 </ul>   
             </div>
 
-
-
             <div class="footer-buttons">
                 <a href="login.html" class="login">INICIAR SESION</a>
-
                 <a href="register.html" class="create-account">CREAR CUENTA</a>
-
             </div>
             
         </div>
 
         <div class="footer-divider"></div>
-
         <p class="bottom-text">Por un deporte más saludable y accesible para todos.</p>
     </footer>
+
+    <script>
+      // Mostrar mensaje de éxito/error según parámetro en la URL
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('reserva') === 'ok') {
+        document.getElementById('msg-reserva-ok').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      if (params.get('reserva') === 'error') {
+        document.getElementById('msg-reserva-error').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    </script>
+
 </body>
 </html>

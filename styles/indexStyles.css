@@ -1,17 +1,23 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  font-family: 'lexend', sans-serif;
+}
+
 body {
+  font-family: 'Lexend', sans-serif;
   margin: 0;
   padding: 0;
   background-image: url('../images/image_Nero_AI_Image_Upscaler_Photo_Face.jpeg');
   background-size: cover;
-  font-family: 'Lexend', sans-serif;
 }
 
 p {
   font-family: 'Lexend', sans-serif;
   font-size: 18px;
   color: white;
-  padding-left: 20px;
-  padding-right: 20px;
 }
 
 img{
@@ -38,15 +44,13 @@ a {
 
 #header {
   width: 99%;
-  height: 120px;
+  height: 180px;
   background-color: #202324fa;
   display: flex;
   align-items: center;
   border-radius: 20px;
-    margin: auto;
-    margin-top: 20px;
-
-
+  margin: auto;
+  margin-top: 20px;
 }
 
 #header img {
@@ -67,14 +71,19 @@ a {
   padding-left: 20px;
 }
 
+.headerButtons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 30px;
+}
+
 .HeaderButton {
   margin-left: auto;
   margin-right: 30px;
   
-  padding-top: 9px;
-  padding-bottom: 9px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 9px 9px 10px 10px;
   height: 30px;
 
   font-family: 'quantico', sans-serif;
@@ -94,14 +103,14 @@ a {
     SECCION PRINCIPAL DE LA WEB
 */
 
-#principalTitle {
+#principalSection {
   width: 75%;
   height: auto;
   justify-content: center;
   align-items: center;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 80px;
+  margin-top: 20px;
   margin-bottom: 150px;
   padding: 20px;
 
@@ -110,7 +119,7 @@ a {
   background-color: #202324b6;
 }
 
-#principalTitle h2 {
+#principalSection h2 {
   color: white;
   font-family: 'quantico', sans-serif;
   font-size: 70px;
@@ -118,12 +127,12 @@ a {
     
 }
 
-#principalTitle h4 {
+#principalSection h4 {
   color: white;
   font-family: 'lexend', sans-serif;
   font-size: 24px;
   text-align: center;
-  padding: 20px;
+  padding: 10px;
     
 }
 
@@ -229,19 +238,20 @@ a {
 #instalacionesWidgetsTitle {
   display: flex; 
   justify-content: center; 
-  
-  gap: 40px;
 
   background-color: #202324da;
+
+  
 }
 
-#instalacionesWidgetsTitle h3 {
+#instalacionesWidgetsTitle h2 {
   color: white; 
   font-family: 'Lexend', sans-serif; 
   font-size: 42px; 
   text-align: center; 
   width: auto; 
   height: auto;
+  margin: 20px 0 20px 0;
 }
 
 #section_widgets_deportes{
@@ -313,13 +323,15 @@ a {
   text-align: center; 
   width: auto; 
   height: auto;
+
+  margin: 20px 0 20px 0;
 }
 
 #horariosContainer {
   display: flex; 
   justify-content: center; 
   flex-wrap: wrap;
-  gap: 40px;
+  gap: 20px;
 
  margin: auto;
  margin-bottom: 30px;
@@ -327,7 +339,7 @@ a {
 
 .horario {
   background-color: #353535ce;
-  width: 800px;
+  width: 600px;
   border-radius: 25px;
   position: relative;
  
@@ -362,125 +374,99 @@ a {
   font-family: Arial, sans-serif;
 }
 
-li {
-  list-style: none;
-  margin-top: 10px;
-  text-decoration: none;
+.footer-container{
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.footer-container {
+.footer-column{
+  background-color: #353535ce;
+  padding: 80px 0 ;
+}
+
+.footer-row{
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
-  padding-bottom: 40px;
 }
 
-.footer-column h3 {
-  color: #ff9a3c;
+.footer-links{
+  width: 25%;
+  padding: 0 15px;
+}
+
+.footer-links h4{
   font-size: 18px;
-  margin-bottom: 15px;
-  width: 20PX;
-}
-
-.footer-column a{
-  font-style: none;
-  list-style: none;
-  padding: 0;
-}
-
-.footer-column ul li {
-  font-style: none;
-  margin-bottom: 8px;
-  font-size: 14px;
-  opacity: 0.9;
-}
-
-#footer_logo {
-  width: 110px;
-  align-items: center;
-  margin-left: 50px;
-}
-
-.footer-buttons {
-  display: flex;
-  margin-top: 20px;
-
-  flex-direction: column;
-  align-items: center;
-}
-
-
-.footer-buttons a {
-  margin-right: 15px;
-  text-decoration: none;
   color: #ffffff;
-  font-weight: bold;
-
-  margin: 10px 0;
+  margin-bottom: 20px;
+  font-weight: 500;
+  border-bottom: 2px solid #5b5754;
+  padding-bottom: 10px;
 }
 
-.create-account {
-  background: #ff7f32;
-  color: #ffffff ;
-  padding: 4px 4px;
-  border-radius: 3px;
-}
-
-.footer-icons {
+.footer-links ul.social-icons{
   display: flex;
-  margin-top: 15px;
-}
-.footer-icons img {
-  width: 28px;
-  height: 40px;
+  flex-direction: row;
+  padding: 0;
+  gap : 10px;
   
 }
 
-.footer-icons .icon {
-  width: 28px;
-  height: 28px;
-  background: #b46a34;
-  border-radius: 50%;
-  margin-right: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.footer-icons .square {
-  border-radius: 3px;
-}
-
-.footer-icons .star {
+.footer-links ul li a {
   font-size: 18px;
-  color: white;
-  background: #b46a34;
-  border-radius: 50%;
+  text-decoration: none;
+  color: #b0b0b0;
+  display: block;
+  margin-bottom: 10px;
+  transition: all .3s ease;
 }
 
-.footer-divider {
-  width: 100%;
-  height: 2px;
-  background: #c47032;
-  margin-top: 20px;
+.footer-links ul li a:hover {
+  color: #ffffff;
+  padding-left: 5px;
 }
 
-.bottom-text {
+.social-links a{
+  display: inline-block;
+  min-height: 30px;
+  width: 40px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 0 10px 10px 0;
   text-align: center;
-  margin-top: 20px;
-  font-size: 13px;
-  opacity: 0.8;
+  line-height: 40px;
+  border-radius: 50%;
+  color: #ffffff;
+  transition: all .5s ease;  
 }
+
+.social-links a:hover {
+  background-color: #ffffff;
+  color: #202324;
+  transform: translateY(-5px);
+}
+
+.footer-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.footer-logo img {
+  width: 150px;
+  height: auto;
+
+  margin-left: 100px;
+}
+
+
 
 /* 
    RESPONSIVE PARA TELEFONOS
 */
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
 
   #header {
-    height: 80px;
-    width: 95%;
+    height: 90px;
+    width: 90%;
   }
 
   #header img {
@@ -489,51 +475,84 @@ li {
   }
 
   #header h1 {
-    font-size: 22px;
+    font-size: 14px;
     margin-left: 10px;
     padding-left: 10px;
   }
 
-  .HeaderButton {
-    font-size: 14px;
+  .HeaderButtons {
     margin-right: 15px;
     padding: 6px 8px;
-    height: auto;
+    height: 100px;
+    
+  } 
+
+  #ReserveNow {
+    padding: 1px 10px;
+    font-size: 14px;
+
   }
 
-  #principalTitle {
+  .HeaderButton {
+    font-size: 14px;
+    padding: 6px 8px;
+  }
+
+  #principalSection {
     width: 90%;
     margin-top: 40px;
     margin-bottom: 80px;
-  }
-
-  #principalTitle h2 {
-    font-size: 36px;
-  }
-
-  #principalTitle h4 {
-    font-size: 18px;
-  }
-
-  #instalationsContainer {
-    flex-direction: column;
     align-items: center;
   }
 
-  .instalation {
+  #principalSection h2 {
+    font-size: 30px;
+  }
+
+  #principalSection h4 {
+    font-size: 18px;
+    margin-top: 10px;
+  }
+
+  #instalationsContainer {
+    flex-direction: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+  }
+
+  #instalationsContainer .instalation {
     width: 90%;
+    margin-bottom: 20px;
+    padding: 5px 0 5px 0 ;
+  }
+
+  #instalationContainer .instalation h3 {
+    font-size: 16px;
   }
 
   #principalButtons {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: 10px;
   }
 
+  #instalacionesWidgetsTitle h2{
+    width: 100%;
+    font-size: 28px;
+    margin: 20px 0 20px 0;    
+  }
+
+  .container_widget_deporte {
+    flex-direction: wrap;
+    align-items: center;
+    width: 40%;
+  }
 
   .widget_deporte {
     width: 95%;
     flex-direction: column;
+    align-items: center;
   }
 
   .widget_deporte img {
@@ -546,23 +565,23 @@ li {
     transform: none;
   }
 
+  .container_widget_deporte .widget_deporte p {
+    font-size: 12px;
+    margin: 10px 20px 10px 20px;
+  }
+
   .horario {
-    width: 95%;
+    max-width: 55%;
   }
 
-  .footer-container {
-    flex-direction: column;
+  .footer-row {
+    
     align-items: center;
-    text-align: center;
   }
 
-  .footer-column {
-    margin-bottom: 20px;
-  }
-
-  #footer_logo {
-    margin-left: 0;
-    margin-bottom: 20px;
+  .footer-links {
+    width: 100%;
+    margin-bottom: 30px;
   }
 
 }
