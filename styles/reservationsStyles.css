@@ -3,7 +3,7 @@ body {
   padding: 0;
   background-image: url('../images/image_Nero_AI_Image_Upscaler_Photo_Face.jpeg');
   background-size: cover;
-  font-family: 'Lexend', sans-serif;
+  font-family: 'Merriweather', serif;
 }
 
 /*
@@ -28,7 +28,7 @@ body {
 
 #principalHeader h1 {
   margin-left: 20px;
-  font-family: 'quantico', sans-serif;
+  font-family: 'Merriweather', serif;
   font-size: 40px;
   color: #e2e2e2;
   border-left: #e2e2e2 2px solid;
@@ -45,7 +45,7 @@ body {
   padding-left: 10px;
   padding-right: 10px;
   height: 30px;
-  font-family: 'quantico', sans-serif;
+  font-family: 'Merriweather', serif;
   font-size: 20px;
   color: #ffffff;
   text-align: center; 
@@ -90,7 +90,7 @@ body {
   background: #202324e7;
   color: #ffffff;
   padding: 60px 50px;
-  font-family: Arial, sans-serif;
+  font-family: inherit;
 }
 
 li {

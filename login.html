@@ -4,13 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Styles/registerLoginStyles.css">
+    <link rel="stylesheet" href="Styles/indexStyles.css">
 
-    <style>@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');</style>
+    <style>@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>Inicio de Sesión — Ayuntamiento de Entrerobles</title>
 </head>
 <body>
-    <div>
-    
+    <!-- Cabecera compartida -->
+    <div id="header"> 
+        <img src="images/logoERwhite.png" alt="Logo Escudo" id="logo_escudo">
+        <h1>POLIDEPORTIVO ENTREROBLES</h1>
+        <div class="headerButtons">
+
+            <div class="HeaderButtonsGroup1">
+                <a href="index.html"  class="HeaderButton">INICIO</a>
+                <a href="#instalacionesWidgetsTitle"  class="HeaderButton">INSTALACIONES</a>
+            </div>
+
+            <div class="HeaderButtonsGroup2">    
+                <a href="#horariosTitle"  class="HeaderButton">HORARIOS</a>
+                <a href="reservations.html" id="ReserveNow" class="HeaderButton">RESERVE YA</a>
+            </div>
+            
+        </div>
     </div>
     <div id="login-container"> 
         <img id="unknownUserImage" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Usuario Desconocido">     
@@ -33,5 +50,42 @@
         </div>
 
     </div>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-row">
+                <div class="footer-links">
+                    <h4>CONTÁCTANOS</h4>
+                    <ul>
+                        <li><a href="#">123-456-7890</a></li>
+                        <li><a href="#">info@aytoentrerobles.com</a></li>
+                        <li><a href="#">Calle Principal, 123, Entrerobles</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>AYUDA</h4>
+                    <ul>
+                        <li><a href="#">Preguntas Frecuentes</a></li>
+                        <li><a href="#">Compras</a></li>
+                        <li><a href="#">Envios</a></li>
+                        <li><a href="#">Sugerencias</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>SÍGUENOS</h4>
+                    <ul class="social-icons">
+                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+                <div class="footer-logo">
+                    <img src="images/logoERwhite.png" alt="Logo del Ayuntamiento de Entrerobles">
+                </div>
+            </div>
+        </div>
+        <div class="footer-divider"></div>
+        <p class="bottom-text">Por un deporte más saludable y accesible para todos.</p>
+    </footer>
 </body>
 </html>

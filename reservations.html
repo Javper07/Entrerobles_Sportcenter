@@ -5,21 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <style>@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');</style>
+    <style>@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="Styles/reservationsStyles.css">
+    <link rel="stylesheet" href="Styles/indexStyles.css">
     <title>Reservas de pistas — Polideportivo Entrerobles</title>
 </head>
 <body>
-    <header id="principalHeader"> 
-        <img src="images/logoERwhite.png" alt="Logo Escudo" id="logo_escudo">
-        <h1>POLIDEPORTIVO ENTREROBLES</h1>
-        <div id="headerButtons" style="margin-left: auto;">
-            <a href="index.html" id="Home" class="HeaderButton">INICIO</a>
-            <a href="index.html" id="Instalations" class="HeaderButton">INSTALACIONES</a>
-            <a href="index.html" id="Schedules" class="HeaderButton">HORARIOS</a>
-            <a href="reservas.html" id="ReserveNow" class="HeaderButton">RESERVE YA</a>
+    <div id="header"> 
+      <img src="images/logoERwhite.png" alt="Logo Escudo" id="logo_escudo">
+      <h1>POLIDEPORTIVO ENTREROBLES</h1>
+      <div class="headerButtons">
+
+        <div class="HeaderButtonsGroup1">
+          <a href="index.html"  class="HeaderButton">INICIO</a>
+          <a href="#instalacionesWidgetsTitle"  class="HeaderButton">INSTALACIONES</a>
         </div>
-    </header>
+
+        <div class="HeaderButtonsGroup2">    
+          <a href="#horariosTitle"  class="HeaderButton">HORARIOS</a>
+          <a href="reservations.html" id="ReserveNow" class="HeaderButton">RESERVE YA</a>
+        </div>
+            
+      </div>
+    </div>
 
     <main class="main-content">
       <div class="container">
@@ -251,40 +260,38 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
-
-            <div id="footer-column-logo">                
-                <img src="Images/logoERwhite.png" alt="Logo" id="footer_logo">
-                <p>+34 625 32 45 12</p>
-                <p>info@aytoentrerobles.com</p>
+            <div class="footer-row">
+                <div class="footer-links">
+                    <h4>CONTÁCTANOS</h4>
+                    <ul>
+                        <li><a href="#">123-456-7890</a></li>
+                        <li><a href="#">info@aytoentrerobles.com</a></li>
+                        <li><a href="#">Calle Principal, 123, Entrerobles</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>AYUDA</h4>
+                    <ul>
+                        <li><a href="#">Preguntas Frecuentes</a></li>
+                        <li><a href="#">Compras</a></li>
+                        <li><a href="#">Envios</a></li>
+                        <li><a href="#">Sugerencias</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>SÍGUENOS</h4>
+                    <ul class="social-icons">
+                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+                <div class="footer-logo">
+                    <img src="images/logoERwhite.png" alt="Logo del Ayuntamiento de Entrerobles">
+                </div>
             </div>
-            
-            <div class="footer-column">
-                <h3>HOME</h3>
-                <ul>
-                    <a href="index.html"><li>Inicio</li></a>
-                    <a href="login.html"><li>Cuenta</li></a>
-                    <a href="reservas.html"><li>Reservas</li></a>
-                    <a href="#horariosTitle"><li>Horarios</li></a>
-                    <a href="#instalacionesWidgetsTitle"><li>Instalaciones</li></a>
-                </ul>
-            </div>
-
-            <div class="footer-column">
-                <h3>¿QUIENES SOMOS?</h3>
-                <ul>
-                    <li>Compañia</li>
-                    <li>Origenes</li>
-                    <li>¿Buscas trabajo?</li>
-                </ul>   
-            </div>
-
-            <div class="footer-buttons">
-                <a href="login.html" class="login">INICIAR SESION</a>
-                <a href="register.html" class="create-account">CREAR CUENTA</a>
-            </div>
-            
         </div>
-
         <div class="footer-divider"></div>
         <p class="bottom-text">Por un deporte más saludable y accesible para todos.</p>
     </footer>
