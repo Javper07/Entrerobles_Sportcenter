@@ -38,9 +38,8 @@
         <div class="login-form">
             <h2>Iniciar Sesión</h2>
             <form action="login.php" method="POST">
-                <input type="text" name="usuario" placeholder="Correo o Nombre de Usuario" required>
+                <input type="email" name="usuario" placeholder="Correo" required>
                 <input type="password" name="password" placeholder="Contraseña" required>
-                <input type="password" name="confirm_password" placeholder="Confirmar Contraseña" required>
                 <div class="remember-container">
                    <input type="checkbox" id="remember-me" name="remember">
                     <label for="remember-me">Recuérdame</label>
@@ -92,5 +91,31 @@
         <p class="bottom-text">Por un deporte más saludable y accesible para todos.</p>
     </footer>
 
+    <script>
+      const loginParams = new URLSearchParams(window.location.search);
+      const emailInput = document.querySelector('input[name="usuario"]');
+      if (emailInput && loginParams.has('email')) {
+        emailInput.value = loginParams.get('email');
+      }
+
+      const status = loginParams.get('registered') ? 'Registro completado. Ahora inicia sesión.' :
+                     loginParams.get('error') === 'invalid' ? 'Correo o contraseña incorrectos.' :
+                     loginParams.get('error') === 'password_mismatch' ? 'Las contraseñas no coinciden.' :
+                     loginParams.get('error') === 'exists' ? 'Ya existe un usuario con ese correo.' :
+                     loginParams.get('error') === 'server' ? 'Error del servidor. Intenta más tarde.' : '';
+
+      if (status) {
+        const message = document.createElement('div');
+        message.textContent = status;
+        message.style.background = 'rgba(255, 255, 255, 0.12)';
+        message.style.color = 'white';
+        message.style.padding = '12px 16px';
+        message.style.borderRadius = '12px';
+        message.style.marginBottom = '16px';
+        message.style.textAlign = 'center';
+        const form = document.querySelector('.login-form');
+        if (form) form.prepend(message);
+      }
+    </script>
 </body>
 </html>

@@ -394,6 +394,20 @@ a {
  background-color: #202324;
 }
 
+a.widget_deporte_link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+a.widget_deporte_link .widget_deporte {
+  cursor: pointer;
+}
+
+a.widget_deporte_link .widget_deporte:hover {
+  transform: translate3d(0px, -5px, 0);
+}
+
 .container_widgets_deportes {
   display: flex;
   justify-content: center;

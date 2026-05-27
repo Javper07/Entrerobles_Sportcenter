@@ -312,6 +312,14 @@
         document.getElementById('msg-reserva-error').style.display = 'block';
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+
+      const savedEmail = params.get('email');
+      if (savedEmail) {
+        const emailField = document.getElementById('email');
+        if (emailField) {
+          emailField.value = savedEmail;
+        }
+      }
     </script>
 
 </body>
