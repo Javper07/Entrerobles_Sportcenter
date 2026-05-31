@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Styles/indexStyles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!--Fuentes de la web-->
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"> <!-- Fuentes de Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> <!-- Iconos de Font Awesome -->
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"> <!-- Fuentes de Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> <!-- Iconos de Font Awesome -->
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');
+    </style>
+
+    <title>Polideportivo Municipal — Entrerobles</title>
+    <script src="header.js"></script>
+</head>
+<body>
+
+    <!--Cabecera de la web-->
+    <div id="header"> 
+        <img src="images/logoERwhite.png" alt="Logo Escudo" id="logo_escudo">
+        <h1>POLIDEPORTIVO ENTREROBLES</h1>
+        <div class="headerButtons">
+
+            <div class="HeaderButtonsGroup1">
+                <a href="index.html"  class="HeaderButton">INICIO</a>
+                <a href="#instalacionesWidgetsTitle"  class="HeaderButton">INSTALACIONES</a>
+            </div>
+
+            <div class="HeaderButtonsGroup2">    
+                <a href="#horariosTitle"  class="HeaderButton">HORARIOS</a>
+                
+            </div>
+            
+            <div class="AccountButtons" id="accountButtons">
+                <!-- Se rellena dinámicamente por header.js -->
+            </div>
+        </div>
+    </div>
+    
+
+    <!--Sección de las instalaciones deportivas-->
+    <div class="sectionTitle_instalaciones">   
+        <div id="principalSection">
+            <h2>BIENVENIDO AL POLIDEPORTIVO ENTREROBLES</h2>
+            <h4>Descubre nuestras instalaciones deportivas y reserva tu espacio</h4>
+           
+            <div id="principalButtons">
+                <button href="reservations.html" id="ReserveNow" >RESERVE YA</button>
+                <button href="#horariosTitle"id="horariosButton" >Horarios</button>
+            </div>
+        </div>
+    </div>
+
+    <!--INSTALACIONES-->
+
+    <div id="instalacionesWidgetsTitle">
+         <h2>NUESTRAS INSTALACIONES DEPORTIVAS</h2>
+    </div>
+
+    <section id="section_widgets_deportes">
+        
+        <div class="container_widget_deporte">
+            <a href="reservations.html" class="widget_deporte_link">
+              <div class="widget_deporte">
+                  <img src="images/gymInterior.jpeg" alt="Imagen del gimnasio" class="widget_image">
+                  <p>Equipado con máquinas de última generación para entrenamiento de fuerza y cardio.</p>
+              </div>
+            </a>
+            <a href="reservations.html" class="widget_deporte_link">
+              <div class="widget_deporte">
+                  <img src="images/poolInterior.jpeg" alt="Imagen de la piscina interior" class="widget_image">
+                  <p>Ideal para natación, clases de aquagym y actividades acuáticas durante todo el año.</p>
+              </div>
+            </a>
+        </div>  
+
+        <div class="container_widget_deporte">
+            <a href="reservations.html" class="widget_deporte_link">
+              <div class="widget_deporte">
+                  <img src="images/sportCourt.jpeg" alt="Imagen de la pistas" class="widget_image">
+                  <p>Disponemos de pistas para fútbol, baloncesto, tenis y pádel, perfectas para tus partidos y entrenamientos.</p>
+              </div>
+            </a>
+            <a href="reservations.html" class="widget_deporte_link">
+              <div class="widget_deporte">
+                   <img src="images/yogaRoom.jpeg" alt="Imagen de la sala de yoga" class="widget_image">
+                  <p>Espacios versátiles para clases de yoga, pilates, zumba y otras actividades grupales.</p>
+              </div>
+            </a>
+        </div>
+
+    </section>
+
+    <!--Seccion de los horarios de las instalaciones-->
+
+    <div id="horariosTitle">
+        <h2>HORARIOS DE NUESTRAS INSTALACIONES</h2>
+    </div>
+    
+    <div id="horariosContainer">
+        <div class="horario">
+            <h4>Gimnasio</h4>
+            <p>Lunes a Viernes: 6:00 - 22:00</p>
+            <p>Sábados: 8:00 - 20:00</p>
+            <p>Domingos: 8:00 - 18:00</p>
+        </div>
+        <div class="horario">
+            <h4>Piscina</h4>
+            <p>Lunes a Viernes: 7:00 - 21:00</p>
+            <p>Sábados: 9:00 - 19:00</p>
+            <p>Domingos: 9:00 - 17:00</p>
+        </div>
+        <div class="horario">
+            <h4>Pistas Deportivas</h4>
+            <p>Lunes a Viernes: 6:00 - 22:00</p>
+            <p>Sábados: 8:00 - 20:00</p>
+            <p>Domingos: 8:00 - 18:00</p>
+        </div>
+    </div>
+    
+    <!--Footer de la web-->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-row">
+                <div class="footer-links">
+                    <h4>CONTÁCTANOS</h4>
+                    <ul>
+                        <li><a href="#">123-456-7890</a></li>
+                        <li><a href="#">info@aytoentrerobles.com</a></li>
+                        <li><a href="#">Calle Principal, 123, Entrerobles</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>AYUDA</h4>
+                    <ul>
+                        <li><a href="#">Preguntas Frecuentes</a></li>
+                        <li><a href="#">Compras</a></li>
+                        <li><a href="#">Envios</a></li>
+                        <li><a href="#">Sugerencias</a></li>
+                        <li><a href="contacto.php">Contacto e Incidencias</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>SÍGUENOS</h4>
+                    <ul class="social-icons">
+                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+                <div class="footer-logo">
+                    <img src="images/logoERwhite.png" alt="Logo del Ayuntamiento de Entrerobles">
+                </div>
+            </div>
+        </div>
+        <div class="footer-divider"></div>
+        <p class="bottom-text">Por un deporte más saludable y accesible para todos.</p>
+    </footer>
+</body>
+</html>

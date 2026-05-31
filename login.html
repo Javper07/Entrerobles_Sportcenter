@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Styles/registerLoginStyles.css">
+    <link rel="stylesheet" href="Styles/indexStyles.css">
+
+    <style>@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>Inicio de Sesión — Ayuntamiento de Entrerobles</title>
+    <script src="header.js"></script>
+</head>
+<body>
+    <!--Cabecera de la web-->
+    <div id="header"> 
+        <img src="images/logoERwhite.png" alt="Logo Escudo" id="logo_escudo">
+        <h1>POLIDEPORTIVO ENTREROBLES</h1>
+        <div class="headerButtons">
+
+            <div class="HeaderButtonsGroup1">
+                <a href="index.html"  class="HeaderButton">INICIO</a>
+                <a href="#instalacionesWidgetsTitle"  class="HeaderButton">INSTALACIONES</a>
+            </div>
+
+            <div class="HeaderButtonsGroup2">    
+                <a href="#horariosTitle"  class="HeaderButton">HORARIOS</a>
+                
+            </div>
+            
+            <div class="AccountButtons">
+                <a href="login.html" class="AccountHeaderButton">INICIAR SESIÓN</a>
+                <a href="register.html" class="AccountHeaderButton">REGISTRARSE</a>
+            </div>
+        </div>
+    </div>
+    <div id="login-container"> 
+        <img id="unknownUserImage" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Usuario Desconocido">     
+        <div class="login-form">
+            <h2>Iniciar Sesión</h2>
+            <form action="login.php" method="POST">
+                <input type="email" name="usuario" placeholder="Correo" required>
+                <input type="password" name="password" placeholder="Contraseña" required>
+                <div class="remember-container">
+                   <input type="checkbox" id="remember-me" name="remember">
+                    <label for="remember-me">Recuérdame</label>
+                </div>
+                <button type="submit" class="submit">Ingresar</button>
+            </form>
+        </div>
+        <div class="option-container">
+            <a href="register.html">Regístrate aquí</a>
+            <a href="forgot_password.html">Recuperar Contraseña</a>
+        </div>
+
+    </div>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-row">
+                <div class="footer-links">
+                    <h4>CONTÁCTANOS</h4>
+                    <ul>
+                        <li><a href="#">123-456-7890</a></li>
+                        <li><a href="#">info@aytoentrerobles.com</a></li>
+                        <li><a href="#">Calle Principal, 123, Entrerobles</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>AYUDA</h4>
+                    <ul>
+                        <li><a href="#">Preguntas Frecuentes</a></li>
+                        <li><a href="#">Compras</a></li>
+                        <li><a href="#">Envios</a></li>
+                        <li><a href="#">Sugerencias</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>SÍGUENOS</h4>
+                    <ul class="social-icons">
+                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+                <div class="footer-logo">
+                    <img src="images/logoERwhite.png" alt="Logo del Ayuntamiento de Entrerobles">
+                </div>
+            </div>
+        </div>
+        <div class="footer-divider"></div>
+        <p class="bottom-text">Por un deporte más saludable y accesible para todos.</p>
+    </footer>
+
+    <script>
+      const loginParams = new URLSearchParams(window.location.search);
+      const emailInput = document.querySelector('input[name="usuario"]');
+      if (emailInput && loginParams.has('email')) {
+        emailInput.value = loginParams.get('email');
+      }
+
+      const status = loginParams.get('registered') ? 'Registro completado. Ahora inicia sesión.' :
+                     loginParams.get('error') === 'invalid' ? 'Correo o contraseña incorrectos.' :
+                     loginParams.get('error') === 'password_mismatch' ? 'Las contraseñas no coinciden.' :
+                     loginParams.get('error') === 'exists' ? 'Ya existe un usuario con ese correo.' :
+                     loginParams.get('error') === 'server' ? 'Error del servidor. Intenta más tarde.' : '';
+
+      if (status) {
+        const message = document.createElement('div');
+        message.textContent = status;
+        message.style.background = 'rgba(255, 255, 255, 0.12)';
+        message.style.color = 'white';
+        message.style.padding = '12px 16px';
+        message.style.borderRadius = '12px';
+        message.style.marginBottom = '16px';
+        message.style.textAlign = 'center';
+        const form = document.querySelector('.login-form');
+        if (form) form.prepend(message);
+      }
+    </script>
+</body>
+</html>

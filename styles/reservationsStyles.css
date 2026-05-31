@@ -1,0 +1,620 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('../images/image_Nero_AI_Image_Upscaler_Photo_Face.jpeg');
+  background-size: cover;
+  font-family: 'Merriweather', serif;
+}
+
+/*
+    HEADER PRINCIPAL DE LA PAGINA DE RESERVAS
+*/
+#principalHeader {
+  width: 99%;
+  height: 120px;
+  background-color: #202324fa;
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  margin: auto;
+  margin-top: 20px;
+}
+
+#principalHeader img {
+  height: 120px;
+  width: auto;
+  margin-left: 20px;
+}
+
+#principalHeader h1 {
+  margin-left: 20px;
+  font-family: 'Merriweather', serif;
+  font-size: 40px;
+  color: #e2e2e2;
+  border-left: #e2e2e2 2px solid;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+}
+
+.HeaderButton {
+  margin-left: auto;
+  margin-right: 30px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 30px;
+  font-family: 'Merriweather', serif;
+  font-size: 20px;
+  color: #ffffff;
+  text-align: center; 
+  font-style: normal;
+  text-decoration: none;
+}
+
+#ReserveNow {
+  background-color: #56361C;
+  color: white;
+  border-radius: 10px; 
+}
+
+/*
+    ALERTAS DE ÉXITO / ERROR
+*/
+.alert {
+  padding: 14px 20px;
+  border-radius: 12px;
+  margin: 20px auto 0;
+  font-size: 15px;
+  font-weight: 500;
+  max-width: 99%;
+}
+
+.alert-success {
+  background-color: rgba(39, 80, 10, 0.6);
+  border: 1px solid rgba(99, 153, 34, 0.5);
+  color: #c0dd97;
+}
+
+.alert-error {
+  background-color: rgba(80, 19, 19, 0.6);
+  border: 1px solid rgba(163, 45, 45, 0.5);
+  color: #f09595;
+}
+
+/*
+    FOOTER DE LA WEB
+*/
+.footer {
+  background: #202324e7;
+  color: #ffffff;
+  padding: 60px 50px;
+  font-family: inherit;
+}
+
+li {
+  list-style: none;
+  margin-top: 10px;
+  text-decoration: none;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding-bottom: 40px;
+}
+
+.footer-column h3 {
+  color: #ff9a3c;
+  font-size: 18px;
+  margin-bottom: 15px;
+  width: 20px;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 8px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+#footer_logo {
+  width: 110px;
+  align-items: center;
+  margin-left: 50px;
+}
+
+.footer-buttons {
+  display: flex;
+  margin-top: 20px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-buttons a {
+  margin-right: 15px;
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.create-account {
+  background: #ff7f32;
+  color: #ffffff;
+  padding: 4px 4px;
+  border-radius: 3px;
+}
+
+.footer-divider {
+  width: 100%;
+  height: 2px;
+  background: #c47032;
+  margin-top: 20px;
+}
+
+.bottom-text {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+/*
+  Responsive Header para teléfonos
+*/
+@media (max-width: 640px) {
+  #principalHeader {
+    height: 80px;
+    width: 95%;
+    border-radius: 15px;
+  }
+
+  #principalHeader img {
+    height: 70px;
+    margin-left: 10px;
+  }
+
+  #principalHeader h1 {
+    font-size: 22px;
+    margin-left: 10px;
+    padding-left: 10px;
+  }
+
+  .HeaderButton {
+    font-size: 14px;
+    margin-right: 15px;
+    padding: 6px 8px;
+    height: auto;
+  }
+}
+
+/*
+  SECCIÓN PRINCIPAL DE LA WEB
+*/
+
+.main-content {
+  padding: 48px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.card {
+  backdrop-filter: blur(16px);
+  background-color: #202324fa;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(61, 61, 61, 0.2);
+  margin-top: 30px;
+}
+
+.info-card {
+  background-color: #242626fa;
+  border: 1px solid rgba(139, 111, 71, 0.3);
+  color: #e0cebd;
+}
+
+.info-card h3 {
+  color: #C9B8A8;
+  font-size: 18px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.info-card ul li {
+  color: #A89278;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+/* Form */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  color: #c9b8a8;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.icon {
+  margin-right: 0.5rem;
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  backdrop-filter: blur(4px);
+  background-color: rgba(34, 34, 34, 0.9);
+  border: 1px solid rgba(73, 73, 73, 0.4);
+  color: #c9b8a8;
+  outline: none;
+  transition: all 0.3s;
+  max-width: 525px;
+  box-sizing: border-box;
+}
+
+.form-input::placeholder, .form-textarea::placeholder {
+  color: #dbdbdb96;
+}
+
+.form-input:focus, .form-textarea:focus {
+  border-color: #464646;
+  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.3);
+}
+
+.form-textarea {
+  resize: none;
+  font-family: inherit;
+}
+
+/* Section Title */
+.section-title {
+  color: #c9b8a8;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.subsection-title {
+  color: #c9b8a8;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Instalaciones Grid */
+.instalations-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .instalations-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.instalation-card {
+  cursor: pointer;
+}
+
+.instalation-input {
+  display: none;
+}
+
+.instalation-content {
+  backdrop-filter: blur(4px);
+  background-color: rgba(39, 39, 39, 0.8);
+  border: 2px solid rgba(82, 82, 82, 0.4);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  transition: all 0.3s;
+}
+
+.instalation-input:checked + .instalation-content {
+  border-color: #1b0e02;
+  background-color: rgba(92, 61, 46, 0.5);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.instalation-content:hover {
+  border-color: rgba(139, 111, 71, 0.6);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.instalation-name {
+  font-size: 0.875rem;
+  text-align: center;
+  color: #c9b8a8;
+  margin: 0;
+}
+
+
+
+/* Datos Personales */
+.personal-data {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 760px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Submit Button */
+.submit-button {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(to right, #6b4423, #8b6f47);
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+.submit-button:hover {
+  background: linear-gradient(to right, #5c3d2e, #6b4423);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+}
+
+/* Sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card-title {
+  color: #c9b8a8;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.card-title-white {
+  color: white;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Price List */
+.price-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.price-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(107, 68, 35, 0.3);
+}
+
+.price-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.price-label {
+  color: #a89278;
+}
+
+.price-value {
+  color: #c9b8a8;
+  font-weight: 600;
+}
+
+/* Info List */
+.info-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.info-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.info-list li::before {
+  content: "•";
+  color: white;
+  margin-top: 0.25rem;
+}
+
+/* Contact Link */
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #a89278;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.contact-link:hover {
+  color: #c9b8a8;
+}
+
+.contact-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: rgba(92, 61, 46, 0.6);
+  border: 1px solid rgba(107, 68, 35, 0.4);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c9b8a8;
+}
+
+.contact-label {
+  font-size: 0.75rem;
+  color: #6b4423;
+}
+
+.contact-value {
+  color: #c9b8a8;
+  font-size: 0.875rem;
+}
+
+/* Scrollbar Styling */
+.time-slots::-webkit-scrollbar {
+  width: 8px;
+}
+
+.time-slots::-webkit-scrollbar-track {
+  background: rgba(26, 15, 10, 0.5);
+  border-radius: 4px;
+}
+
+.time-slots::-webkit-scrollbar-thumb {
+  background: rgba(107, 68, 35, 0.6);
+  border-radius: 4px;
+}
+
+.time-slots::-webkit-scrollbar-thumb:hover {
+  background: rgba(107, 68, 35, 0.8);
+}
+
+/* Responsive container */
+@media (min-width: 640px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 2rem;
+  }
+}
+/* ── Cuadrícula de horas ─────────────────────────────── */
+.duracion-selector {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+  color: #374151;
+}
+.duracion-label { font-weight: 600; }
+.duracion-opcion {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.turno-bloque {
+  margin-bottom: 18px;
+}
+.turno-titulo {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+.horas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.hora-btn {
+  padding: 10px 6px;
+  border-radius: 8px;
+  border: 2px solid #d1d5db;
+  background: #ffffff;
+  color: #1f2937;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+.hora-btn:hover:not(:disabled) {
+  border-color: #2563eb;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+.hora-btn--seleccionada {
+  border-color: #2563eb;
+  background: #2563eb;
+  color: #ffffff !important;
+}
+.hora-btn--ocupada {
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+.hora-sel-label {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #16a34a;
+}
+.horario-aviso {
+  font-size: 0.85rem;
+  color: #b45309;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  padding: 10px 14px;
+  border-radius: 8px;
+}
