@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $host     = 'localhost';
 $db       = 'polideportivoEntrerobles';
 $user     = 'postgres';
@@ -18,7 +20,7 @@ try {
 
 } catch (PDOException $e) {
     // Si falla la conexión redirige con error
-    header('Location: reservations.html?reserva=error');
+    header('Location: reservations.php?reserva=error');
     exit;
 }
 
@@ -26,7 +28,7 @@ try {
 // SOLO ACEPTAR PETICIONES POST
 // =====================================================
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: reservations.html');
+    header('Location: reservations.php?reserva=error');
     exit;
 }
 
@@ -47,17 +49,17 @@ $observaciones = trim($_POST['observaciones'] ?? '');
 // VALIDACIÓN BÁSICA
 // =====================================================
 if (!$instalacion || !$fecha || !$hora_inicio || !$hora_fin || !$nombre || !$email) {
-    header('Location: reservations.html?reserva=error');
+    header('Location: reservations.php?reserva=error');
     exit;
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    header('Location: reservations.html?reserva=error');
+    header('Location: reservations.php?reserva=error');
     exit;
 }
 
 if ($hora_fin <= $hora_inicio) {
-    header('Location: reservations.html?reserva=error');
+    header('Location: reservations.php?reserva=error');
     exit;
 }
 
@@ -69,7 +71,7 @@ $stmt->execute([':valor' => $instalacion]);
 $inst = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$inst) {
-    header('Location: reservations.html?reserva=error');
+    header('Location: reservations.php?reserva=error');
     exit;
 }
 $instalacion_id = $inst['id'];
@@ -94,31 +96,37 @@ $stmt->execute([
 
 if ($stmt->fetch()) {
     // Ya existe una reserva que se solapa
-    header('Location: reservations.html?reserva=ocupado');
+    header('Location: reservations.php?reserva=ocupado');
     exit;
 }
 
 // =====================================================
 // BUSCAR O CREAR EL USUARIO
 // =====================================================
-$stmt = $pdo->prepare("SELECT id FROM usuarios WHERE email = :email");
-$stmt->execute([':email' => $email]);
-$usuario = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if ($usuario) {
-    $usuario_id = $usuario['id'];
+// Si hay sesión activa, usar el usuario_id de la sesión
+if (isset($_SESSION['usuario_id'])) {
+    $usuario_id = $_SESSION['usuario_id'];
 } else {
-    $stmt = $pdo->prepare("
-        INSERT INTO usuarios (nombre, email, telefono)
-        VALUES (:nombre, :email, :telefono)
-        RETURNING id
-    ");
-    $stmt->execute([
-        ':nombre'   => $nombre,
-        ':email'    => $email,
-        ':telefono' => $telefono,
-    ]);
-    $usuario_id = $stmt->fetchColumn();
+    // Si no hay sesión, buscar o crear el usuario
+    $stmt = $pdo->prepare("SELECT id FROM usuarios WHERE email = :email");
+    $stmt->execute([':email' => $email]);
+    $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($usuario) {
+        $usuario_id = $usuario['id'];
+    } else {
+        $stmt = $pdo->prepare("
+            INSERT INTO usuarios (nombre, email, telefono)
+            VALUES (:nombre, :email, :telefono)
+            RETURNING id
+        ");
+        $stmt->execute([
+            ':nombre'   => $nombre,
+            ':email'    => $email,
+            ':telefono' => $telefono,
+        ]);
+        $usuario_id = $stmt->fetchColumn();
+    }
 }
 
 // =====================================================
@@ -143,6 +151,6 @@ $stmt->execute([
 // =====================================================
 // TODO OK — Redirigir con mensaje de éxito
 // =====================================================
-header('Location: reservations.html?reserva=ok');
+header('Location: reservations.php?reserva=ok');
 exit;
 ?>

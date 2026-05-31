@@ -763,3 +763,13 @@ a.widget_deporte_link .widget_deporte:hover {
   }
 
 }
+
+/* Header - nombre usuario logueado */
+.AccountHeaderButton--name {
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    pointer-events: none;
+    opacity: 0.9;
+}

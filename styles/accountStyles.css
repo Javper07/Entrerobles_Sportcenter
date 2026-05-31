@@ -1,0 +1,414 @@
+/* Account Page Styles */
+
+.account-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.account-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 40px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.account-header h1 {
+    font-size: 2.5rem;
+    margin: 0 0 10px 0;
+    font-family: 'Bungee Spice', cursive;
+}
+
+.account-header p {
+    font-size: 1.1rem;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.account-content {
+    margin: 20px 0;
+}
+
+/* Reservas Section */
+.reservas-section {
+    margin-bottom: 40px;
+}
+
+.reservas-section h2 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #333;
+    border-bottom: 3px solid #667eea;
+    padding-bottom: 10px;
+}
+
+.reservas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+/* Reserva Card */
+.reserva-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.reserva-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.reserva-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reserva-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.estado {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.estado-activa {
+    background-color: #4caf50;
+    color: white;
+}
+
+.estado-cancelada {
+    background-color: #f44336;
+    color: white;
+}
+
+.reserva-details {
+    padding: 20px;
+    background: white;
+}
+
+.reserva-details p {
+    margin: 10px 0;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.reserva-details strong {
+    color: #333;
+}
+
+.reserva-actions {
+    padding: 15px 20px;
+    background: #f9f9f9;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-edit,
+.btn-delete {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-edit {
+    background-color: #667eea;
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: #5568d3;
+    transform: scale(1.05);
+}
+
+.btn-delete {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #da190b;
+    transform: scale(1.05);
+}
+
+/* No reservas */
+.no-reservas {
+    text-align: center;
+    padding: 60px 20px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    border: 2px dashed #ddd;
+}
+
+.no-reservas p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background-color: #999;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #777;
+}
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #000;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+}
+
+.form-group input:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+.modal-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .account-header {
+        padding: 30px 20px;
+    }
+
+    .account-header h1 {
+        font-size: 2rem;
+    }
+
+    .reservas-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .reserva-actions {
+        flex-direction: column;
+    }
+
+    .btn-edit,
+    .btn-delete {
+        flex: none;
+        width: 100%;
+    }
+
+    .modal-content {
+        width: 95%;
+    }
+}
+
+/* ── Mejoras paso 3 ─────────────────────────────────────── */
+
+.reservas-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.reservas-section-header h2 { margin: 0; border: none; }
+
+/* Tarjeta cancelada */
+.reserva-card--cancelada { opacity: 0.65; }
+
+/* Botón cancelar */
+.btn-cancel {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    background-color: #f59e0b;
+    color: white;
+}
+.btn-cancel:hover { background-color: #d97706; transform: scale(1.05); }
+
+/* Botón peligro (confirmar eliminar/cancelar) */
+.btn-danger {
+    background-color: #ef4444;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+.btn-danger:hover { background-color: #dc2626; }
+
+/* Modal confirm */
+.modal-confirm {
+    max-width: 380px;
+    text-align: center;
+}
+.confirm-msg {
+    font-size: 1rem;
+    color: #374151;
+    margin: 10px 0 24px;
+    line-height: 1.5;
+}
+
+/* Toast */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    z-index: 9999;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    animation: fadeInUp 0.3s ease;
+}
+.toast--ok    { background: #16a34a; color: #fff; }
+.toast--error { background: #dc2626; color: #fff; }
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
