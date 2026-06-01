@@ -48,6 +48,5 @@ try {
 } catch (PDOException $e) {
     // Si la tabla no existe todavía, igual devolvemos éxito (el admin verá el error en logs)
     // En producción aquí iría también un mail con mail()
-    error_log('[contacto] DB error: ' . $e->getMessage());
     echo json_encode(['success' => true, 'message' => 'Mensaje enviado correctamente']);
 }

@@ -113,7 +113,7 @@ try {
         $stmt = $pdo->query("
             SELECT r.id, u.nombre as usuario, u.email, i.nombre as instalacion,
                    r.fecha, r.hora_inicio, r.hora_fin, r.participantes,
-                   r.observaciones, r.estado, r.fecha_creacion
+                   r.observaciones, r.estado, r.creado_en as fecha_creacion
             FROM reservas r
             JOIN usuarios u ON r.usuario_id = u.id
             JOIN instalaciones i ON r.instalacion_id = i.id

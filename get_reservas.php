@@ -23,7 +23,7 @@ try {
             r.participantes,
             r.observaciones,
             r.estado,
-            r.fecha_creacion,
+            r.creado_en as fecha_creacion,
             i.nombre as instalacion_nombre
         FROM reservas r
         JOIN instalaciones i ON r.instalacion_id = i.id
