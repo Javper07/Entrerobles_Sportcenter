@@ -16,6 +16,7 @@ session_start();
     
     <!-- ⭐ INYECCIÓN DE SESIÓN - SE EJECUTA PRIMERO -->
     <?php include 'check_session.php'; ?>
+    <script src="header.js"></script>
 </head>
 <body>
     <!--Cabecera de la web-->
@@ -45,10 +46,10 @@ session_start();
 
         <!-- Mensaje de éxito o error -->
         <div id="msg-reserva-ok" class="alert alert-success" style="display:none;">
-          ✅ ¡Reserva enviada correctamente! Recibirás un email de confirmación.
+          Reserva enviada correctamente
         </div>
         <div id="msg-reserva-error" class="alert alert-error" style="display:none;">
-          ❌ Ha ocurrido un error al enviar la reserva. Inténtalo de nuevo.
+          Ha ocurrido un error al enviar la reserva. Inténtalo de nuevo.
         </div>
 
         <div class="grid">
@@ -146,18 +147,18 @@ session_start();
 
                   <!-- Turno mañana -->
                   <div class="turno-bloque">
-                    <p class="turno-titulo">Mañana (09:00 – 13:00)</p>
+                    <p class="turno-titulo"> Mañana (09:00 – 13:00)</p>
                     <div class="horas-grid" id="horas-manana"></div>
                   </div>
 
                   <!-- Turno tarde -->
                   <div class="turno-bloque">
-                    <p class="turno-titulo">Tarde (17:00 – 21:00)</p>
+                    <p class="turno-titulo"> Tarde (17:00 – 21:00)</p>
                     <div class="horas-grid" id="horas-tarde"></div>
                   </div>
 
                   <p id="hora-seleccionada-label" class="hora-sel-label" style="display:none;"></p>
-                  <p id="horario-aviso" class="horario-aviso" style="display:none;">⚠️ Selecciona instalación y fecha primero.</p>
+                  <p id="horario-aviso" class="horario-aviso" style="display:none;"> Seleccione una instalación y fecha primero.</p>
 
                   <!-- Hidden inputs que se envían al formulario -->
                   <input type="hidden" id="hora_inicio" name="hora_inicio" required>
@@ -186,12 +187,6 @@ session_start();
 
                     <div class="form-group">
                       <label for="participantes" class="form-label">
-                        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                          <circle cx="9" cy="7" r="4"></circle>
-                          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
                         Nº Participantes
                       </label>
                       <input type="number" id="participantes" name="participantes" min="1" max="50" class="form-input" placeholder="1" required>
@@ -261,24 +256,18 @@ session_start();
               </a>
               <a class="contact-link" href="tel:+34000000000">
                 <div class="contact-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                  </svg>
+                  
                   <span class="contact-text"><strong>Teléfono</strong><br/>+34 000 000 000</span>
                 </div>
               </a>
               <a class="contact-link" href="contacto.php">
                 <div class="contact-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                   <span class="contact-text"><strong>Contacto e Incidencias</strong><br/>Quejas, sugerencias...</span>
                 </div>
               </a>
               <a class="contact-link" href="mailto:info@polideportivo.com">
                 <div class="contact-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                  </svg>
+                 
                   <span class="contact-text"><strong>Email</strong><br/>info@polideportivo.com</span>
                 </div>
               </a>
@@ -398,7 +387,7 @@ session_start();
                 document.getElementById('hora_fin').value    = minToHHMM(finMin);
 
                 const label = document.getElementById('hora-seleccionada-label');
-                label.textContent = '✅ Seleccionado: ' + minToHHMM(inicioMin) + ' – ' + minToHHMM(finMin);
+                label.textContent = 'Seleccionado: ' + minToHHMM(inicioMin) + ' – ' + minToHHMM(finMin);
                 label.style.display = 'block';
 
                 // Re-render para reflejar selección visualmente

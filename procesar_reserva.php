@@ -1,4 +1,5 @@
 <?php
+require_once 'db.php';
 session_start();
 
 $host     = 'localhost';
@@ -28,7 +29,7 @@ try {
 // SOLO ACEPTAR PETICIONES POST
 // =====================================================
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: reservations.php?reserva=error');
+    header('Location: reservations.php');
     exit;
 }
 

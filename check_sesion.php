@@ -1,6 +1,7 @@
 <?php
+require_once 'db.php';
 // Este archivo retorna un script que verifica la sesión y actualiza el header
-session_start();
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
 $isLoggedIn = isset($_SESSION['usuario_id']);
 $usuarioNombre = $_SESSION['usuario_nombre'] ?? '';
@@ -50,7 +51,7 @@ function actualizarHeaderPorServidor() {
     if (serverSessionData.isLoggedIn) {
         console.log('[check-session.js] → Actualizando header como LOGUEADO');
         accountButtons.innerHTML = `
-            <a href="account.html" class="AccountHeaderButton">MI CUENTA</a>
+            <a href="account.php" class="AccountHeaderButton">MI CUENTA</a>
             <a href="logout.php" class="AccountHeaderButton">CERRAR SESIÓN</a>
         `;
         console.log('[check-session.js] ✓ Header actualizado para usuario logueado');
