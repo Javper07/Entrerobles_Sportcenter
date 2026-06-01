@@ -2,7 +2,6 @@
 session_start();
 header('Content-Type: application/json');
 
-// Solo admins
 if (!isset($_SESSION['usuario_id'])) {
     http_response_code(401);
     echo json_encode(['error' => 'No autenticado']);
@@ -26,61 +25,102 @@ try {
 
     $seccion = $_GET['seccion'] ?? 'resumen';
 
+    // ── RESUMEN ───────────────────────────────────────────────────────────
     if ($seccion === 'resumen') {
 
-        // Totales
-        $totales = [];
+        // Una sola query con CTEs para todos los KPIs y listas
+        $stmt = $pdo->query("
+            WITH
+            kpi AS (
+                SELECT
+                    COUNT(*) FILTER (WHERE estado != 'cancelada')                              AS reservas_activas,
+                    COUNT(*) FILTER (WHERE fecha = CURRENT_DATE AND estado != 'cancelada')     AS reservas_hoy,
+                    (SELECT COUNT(*) FROM usuarios)                                            AS usuarios,
+                    (SELECT COUNT(*) FROM contacto WHERE leido = FALSE)                        AS mensajes_sin_leer
+                FROM reservas
+            ),
+            hoy AS (
+                SELECT r.id, u.nombre AS usuario, u.email,
+                       i.nombre AS instalacion,
+                       r.hora_inicio, r.hora_fin, r.participantes, r.estado
+                FROM reservas r
+                JOIN usuarios u    ON r.usuario_id     = u.id
+                JOIN instalaciones i ON r.instalacion_id = i.id
+                WHERE r.fecha = CURRENT_DATE
+                ORDER BY r.hora_inicio ASC
+            ),
+            proximas AS (
+                SELECT r.id, u.nombre AS usuario,
+                       i.nombre AS instalacion,
+                       r.fecha, r.hora_inicio, r.hora_fin, r.estado
+                FROM reservas r
+                JOIN usuarios u    ON r.usuario_id     = u.id
+                JOIN instalaciones i ON r.instalacion_id = i.id
+                WHERE r.fecha > CURRENT_DATE
+                  AND r.fecha <= CURRENT_DATE + INTERVAL '7 days'
+                  AND r.estado != 'cancelada'
+                ORDER BY r.fecha ASC, r.hora_inicio ASC
+                LIMIT 20
+            )
+            SELECT
+                (SELECT row_to_json(k) FROM kpi k)          AS kpi,
+                (SELECT json_agg(h) FROM hoy h)             AS reservas_hoy_lista,
+                (SELECT json_agg(p) FROM proximas p)        AS proximas_reservas
+        ");
 
-        $stmt = $pdo->query("SELECT COUNT(*) FROM reservas WHERE estado != 'cancelada'");
-        $totales['reservas_activas'] = (int)$stmt->fetchColumn();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $stmt = $pdo->query("SELECT COUNT(*) FROM reservas WHERE fecha = CURRENT_DATE AND estado != 'cancelada'");
-        $totales['reservas_hoy'] = (int)$stmt->fetchColumn();
+        $kpi            = json_decode($row['kpi'],              true);
+        $hoy_lista      = json_decode($row['reservas_hoy_lista'], true) ?? [];
+        $proximas       = json_decode($row['proximas_reservas'],  true) ?? [];
 
-        $stmt = $pdo->query("SELECT COUNT(*) FROM usuarios");
-        $totales['usuarios'] = (int)$stmt->fetchColumn();
-
-        // Mensajes sin leer (puede fallar si la tabla no existe aún)
+        // Marcar mensajes como leídos tras leerlos
         try {
-            $stmt = $pdo->query("SELECT COUNT(*) FROM contacto WHERE leido = FALSE");
-            $totales['mensajes_sin_leer'] = (int)$stmt->fetchColumn();
-        } catch (Exception $e) {
-            $totales['mensajes_sin_leer'] = 0;
-        }
+            $pdo->exec("UPDATE contacto SET leido = TRUE WHERE leido = FALSE");
+        } catch (Exception $e) { /* tabla puede no existir */ }
 
-        // Reservas de hoy
+        echo json_encode([
+            'reservas_activas'   => (int)($kpi['reservas_activas']   ?? 0),
+            'reservas_hoy'       => (int)($kpi['reservas_hoy']       ?? 0),
+            'usuarios'           => (int)($kpi['usuarios']           ?? 0),
+            'mensajes_sin_leer'  => (int)($kpi['mensajes_sin_leer']  ?? 0),
+            'reservas_hoy_lista' => $hoy_lista,
+            'proximas_reservas'  => $proximas,
+        ]);
+
+    // ── RESERVAS ──────────────────────────────────────────────────────────
+    } elseif ($seccion === 'reservas') {
+
         $stmt = $pdo->query("
-            SELECT r.id, u.nombre as usuario, u.email, i.nombre as instalacion,
-                   r.hora_inicio, r.hora_fin, r.participantes, r.estado
+            SELECT r.id,
+                   u.nombre    AS usuario,
+                   u.email,
+                   i.nombre    AS instalacion,
+                   r.fecha,
+                   r.hora_inicio,
+                   r.hora_fin,
+                   r.participantes,
+                   r.observaciones,
+                   r.estado,
+                   r.creado_en AS fecha_creacion
             FROM reservas r
-            JOIN usuarios u ON r.usuario_id = u.id
+            JOIN usuarios    u ON r.usuario_id     = u.id
             JOIN instalaciones i ON r.instalacion_id = i.id
-            WHERE r.fecha = CURRENT_DATE
-            ORDER BY r.hora_inicio ASC
+            ORDER BY r.fecha DESC, r.hora_inicio DESC
+            LIMIT 100
         ");
-        $totales['reservas_hoy_lista'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
 
-        // Próximas reservas (7 días)
-        $stmt = $pdo->query("
-            SELECT r.id, u.nombre as usuario, i.nombre as instalacion,
-                   r.fecha, r.hora_inicio, r.hora_fin, r.estado
-            FROM reservas r
-            JOIN usuarios u ON r.usuario_id = u.id
-            JOIN instalaciones i ON r.instalacion_id = i.id
-            WHERE r.fecha > CURRENT_DATE AND r.fecha <= CURRENT_DATE + INTERVAL '7 days'
-              AND r.estado != 'cancelada'
-            ORDER BY r.fecha ASC, r.hora_inicio ASC
-            LIMIT 20
-        ");
-        $totales['proximas_reservas'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        echo json_encode($totales);
-
+    // ── USUARIOS ──────────────────────────────────────────────────────────
     } elseif ($seccion === 'usuarios') {
 
         $stmt = $pdo->query("
-            SELECT u.id, u.nombre, u.email, u.telefono, u.es_admin,
-                   COUNT(r.id) as total_reservas
+            SELECT u.id,
+                   u.nombre,
+                   u.email,
+                   u.telefono,
+                   u.es_admin,
+                   COUNT(r.id) AS total_reservas
             FROM usuarios u
             LEFT JOIN reservas r ON r.usuario_id = u.id AND r.estado != 'cancelada'
             GROUP BY u.id, u.nombre, u.email, u.telefono, u.es_admin
@@ -88,6 +128,7 @@ try {
         ");
         echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
 
+    // ── MENSAJES ──────────────────────────────────────────────────────────
     } elseif ($seccion === 'mensajes') {
 
         try {
@@ -107,20 +148,6 @@ try {
         } catch (Exception $e) {
             echo json_encode([]);
         }
-
-    } elseif ($seccion === 'reservas') {
-
-        $stmt = $pdo->query("
-            SELECT r.id, u.nombre as usuario, u.email, i.nombre as instalacion,
-                   r.fecha, r.hora_inicio, r.hora_fin, r.participantes,
-                   r.observaciones, r.estado, r.creado_en as fecha_creacion
-            FROM reservas r
-            JOIN usuarios u ON r.usuario_id = u.id
-            JOIN instalaciones i ON r.instalacion_id = i.id
-            ORDER BY r.fecha DESC, r.hora_inicio DESC
-            LIMIT 100
-        ");
-        echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
 } catch (PDOException $e) {
