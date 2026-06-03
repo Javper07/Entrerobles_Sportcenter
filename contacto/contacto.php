@@ -9,24 +9,24 @@ session_start();
     <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <style>@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');</style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="Styles/indexStyles.css">
-    <link rel="stylesheet" href="Styles/contactoStyles.css">
+    <link rel="stylesheet" href="../Styles/indexStyles.css">
+    <link rel="stylesheet" href="../Styles/contactoStyles.css">
     <title>Contacto — Polideportivo Entrerobles</title>
-    <script src="header.js"></script>
+    <script src="../comun/header.js"></script>
 </head>
 <body>
 
     <!-- Cabecera -->
     <div id="header">
-        <img src="images/logoERwhite.png" alt="Logo Escudo" id="logo_escudo">
+        <img src="../images/logoERwhite.png" alt="Logo Escudo" id="logo_escudo">
         <h1>POLIDEPORTIVO ENTREROBLES</h1>
         <div class="headerButtons">
             <div class="HeaderButtonsGroup1">
-                <a href="index.html" class="HeaderButton">INICIO</a>
-                <a href="index.html#instalacionesWidgetsTitle" class="HeaderButton">INSTALACIONES</a>
+                <a href="../index.html" class="HeaderButton">INICIO</a>
+                <a href="../index.html#instalacionesWidgetsTitle" class="HeaderButton">INSTALACIONES</a>
             </div>
             <div class="HeaderButtonsGroup2">
-                <a href="index.html#horariosTitle" class="HeaderButton">HORARIOS</a>
+                <a href="../index.html#horariosTitle" class="HeaderButton">HORARIOS</a>
             </div>
             <div class="AccountButtons" id="accountButtons"></div>
         </div>
@@ -147,7 +147,7 @@ session_start();
                 <div class="footer-links">
                     <h4>AYUDA</h4>
                     <ul>
-                        <li><a href="contacto.php">Contacto e Incidencias</a></li>
+                        <li><a href="../contacto/contacto.php">Contacto e Incidencias</a></li>
                         <li><a href="#">Preguntas Frecuentes</a></li>
                     </ul>
                 </div>
@@ -160,7 +160,7 @@ session_start();
                     </ul>
                 </div>
                 <div class="footer-logo">
-                    <img src="images/logoERwhite.png" alt="Logo del Ayuntamiento de Entrerobles">
+                    <img src="../images/logoERwhite.png" alt="Logo del Ayuntamiento de Entrerobles">
                 </div>
             </div>
         </div>
@@ -170,7 +170,7 @@ session_start();
 
     <script>
         // Pre-rellenar si hay sesión
-        fetch('get_user_info.php', { credentials: 'include' })
+        fetch('../usuarios/get_user_info.php', { credentials: 'include' })
             .then(r => r.json())
             .then(data => {
                 if (data.success) {

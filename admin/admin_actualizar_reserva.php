@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-require 'db.php';
+require '../comun/db.php';
 
 try {
     $pdo = getDbConnection();

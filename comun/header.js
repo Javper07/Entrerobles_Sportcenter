@@ -16,7 +16,7 @@ setTimeout(function() {
 function verificarSesionYActualizarHeader() {
     console.log('[Header.js] Iniciando fetch a get_user_info.php');
     
-    fetch('get_user_info.php', {
+    fetch('../usuarios/get_user_info.php', {
         method: 'GET',
         credentials: 'include',
         cache: 'no-store'
@@ -61,8 +61,8 @@ function actualizarHeaderLogueado(nombre, email) {
     console.log('[Header.js] → Encontrado elemento accountButtons, inyectando HTML...');
     accountButtons.innerHTML = `
         <span class="AccountHeaderButton AccountHeaderButton--name">👤 ${nombre}</span>
-        <a href="account.php" class="AccountHeaderButton">MI CUENTA</a>
-        <a href="logout.php" class="AccountHeaderButton">CERRAR SESIÓN</a>
+        <a href="../usuarios/account.php" class="AccountHeaderButton">MI CUENTA</a>
+        <a href="../usuarios/logout.php" class="AccountHeaderButton">CERRAR SESIÓN</a>
     `;
     console.log('[Header.js] ✓ Header actualizado correctamente');
 }
@@ -78,8 +78,8 @@ function actualizarHeaderNoLogueado() {
     
     console.log('[Header.js] → Encontrado elemento accountButtons, inyectando HTML...');
     accountButtons.innerHTML = `
-        <a href="login.html" class="AccountHeaderButton">INICIAR SESIÓN</a>
-        <a href="register.html" class="AccountHeaderButton">REGISTRARSE</a>
+        <a href="../login.html" class="AccountHeaderButton">INICIAR SESIÓN</a>
+        <a href="../register.html" class="AccountHeaderButton">REGISTRARSE</a>
     `;
     console.log('[Header.js] ✓ Header actualizado correctamente');
 }

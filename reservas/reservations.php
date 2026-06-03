@@ -10,28 +10,28 @@ session_start();
     <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <style>@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');</style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="Styles/reservationsStyles.css">
-    <link rel="stylesheet" href="Styles/indexStyles.css">
+    <link rel="stylesheet" href="../Styles/reservationsStyles.css">
+    <link rel="stylesheet" href="../Styles/indexStyles.css">
     <title>Reservas de pistas — Polideportivo Entrerobles</title>
     
     <!-- ⭐ INYECCIÓN DE SESIÓN - SE EJECUTA PRIMERO -->
-    <?php include 'check_session.php'; ?>
-    <script src="header.js"></script>
+    <?php include '../comun/check_sesion.php'; ?>
+    <script src="../comun/header.js"></script>
 </head>
 <body>
     <!--Cabecera de la web-->
     <div id="header"> 
-        <img src="images/logoERwhite.png" alt="Logo Escudo" id="logo_escudo">
+        <img src="../images/logoERwhite.png" alt="Logo Escudo" id="logo_escudo">
         <h1>POLIDEPORTIVO ENTREROBLES</h1>
         <div class="headerButtons">
 
             <div class="HeaderButtonsGroup1">
-                <a href="index.html"  class="HeaderButton">INICIO</a>
-                <a href="#instalacionesWidgetsTitle"  class="HeaderButton">INSTALACIONES</a>
+                <a href="../index.html"  class="HeaderButton">INICIO</a>
+                <a href="../index.html#instalacionesWidgetsTitle"  class="HeaderButton">INSTALACIONES</a>
             </div>
 
             <div class="HeaderButtonsGroup2">    
-                <a href="#horariosTitle"  class="HeaderButton">HORARIOS</a>
+                <a href="../index.html#horariosTitle"  class="HeaderButton">HORARIOS</a>
                 
             </div>
             
@@ -260,7 +260,7 @@ session_start();
                   <span class="contact-text"><strong>Teléfono</strong><br/>+34 000 000 000</span>
                 </div>
               </a>
-              <a class="contact-link" href="contacto.php">
+              <a class="contact-link" href="../contacto/contacto.php">
                 <div class="contact-icon">
                   <span class="contact-text"><strong>Contacto e Incidencias</strong><br/>Quejas, sugerencias...</span>
                 </div>
@@ -304,7 +304,7 @@ session_start();
       }
 
       // ── Datos del usuario logueado ────────────────────────────────────
-      fetch('get_user_info.php', { credentials: 'include' })
+      fetch('../usuarios/get_user_info.php', { credentials: 'include' })
         .then(r => r.json())
         .then(data => {
           if (data.success) {

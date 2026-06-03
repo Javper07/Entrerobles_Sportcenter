@@ -21,13 +21,13 @@ $esAdmin       = !empty($_SESSION['es_admin']);
 
         if (session.loggedIn) {
             el.innerHTML =
-                '<a href="account.php" class="AccountHeaderButton">MI CUENTA</a>' +
-                (session.esAdmin ? '<a href="admin.php" class="AccountHeaderButton">ADMIN</a>' : '') +
-                '<a href="logout.php" class="AccountHeaderButton">CERRAR SESIÓN</a>';
+                '<a href="../usuarios/account.php" class="AccountHeaderButton">MI CUENTA</a>' +
+                (session.esAdmin ? '<a href="../admin/admin.php" class="AccountHeaderButton">ADMIN</a>' : '') +
+                '<a href="../usuarios/logout.php" class="AccountHeaderButton">CERRAR SESIÓN</a>';
         } else {
             el.innerHTML =
-                '<a href="login.html" class="AccountHeaderButton">INICIAR SESIÓN</a>' +
-                '<a href="register.html" class="AccountHeaderButton">REGISTRARSE</a>';
+                '<a href="../login.html" class="AccountHeaderButton">INICIAR SESIÓN</a>' +
+                '<a href="../register.html" class="AccountHeaderButton">REGISTRARSE</a>';
         }
     }
 

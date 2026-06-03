@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['usuario_id'])) {
-    header('Location: login.html');
+    header('Location: ../login.html');
     exit;
 }
 ?><!DOCTYPE html>
@@ -11,22 +11,22 @@ if (!isset($_SESSION['usuario_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="Styles/indexStyles.css">
-    <link rel="stylesheet" href="Styles/accountStyles.css">
+    <link rel="stylesheet" href="../Styles/indexStyles.css">
+    <link rel="stylesheet" href="../Styles/accountStyles.css">
     <title>Mi Cuenta — Polideportivo Entrerobles</title>
 </head>
 <body>
 
     <div id="header">
-        <img src="images/logoERwhite.png" alt="Logo" id="logo_escudo">
+        <img src="../images/logoERwhite.png" alt="Logo" id="logo_escudo">
         <h1>POLIDEPORTIVO ENTREROBLES</h1>
         <div class="headerButtons">
             <div class="HeaderButtonsGroup1">
-                <a href="index.html" class="HeaderButton">INICIO</a>
-                <a href="index.html#instalacionesWidgetsTitle" class="HeaderButton">INSTALACIONES</a>
+                <a href="../index.html" class="HeaderButton">INICIO</a>
+                <a href="../index.html#instalacionesWidgetsTitle" class="HeaderButton">INSTALACIONES</a>
             </div>
             <div class="HeaderButtonsGroup2">
-                <a href="index.html#horariosTitle" class="HeaderButton">HORARIOS</a>
+                <a href="../index.html#horariosTitle" class="HeaderButton">HORARIOS</a>
             </div>
             <div class="AccountButtons" id="accountButtons">
                 <span class="AccountHeaderButton">👤 <?php echo htmlspecialchars($_SESSION['usuario_nombre'] ?? ''); ?></span>
@@ -47,12 +47,12 @@ if (!isset($_SESSION['usuario_id'])) {
             <section class="reservas-section">
                 <div class="reservas-section-header">
                     <h2>Mis Reservas</h2>
-                    <a href="reservations.php" class="btn-primary">+ Nueva reserva</a>
+                    <a href="../reservas/reservations.php" class="btn-primary">+ Nueva reserva</a>
                 </div>
                 <div id="reservasContainer" class="reservas-grid"></div>
                 <div id="noReservas" class="no-reservas" style="display:none;">
                     <p>No tienes ninguna reserva registrada.</p>
-                    <a href="reservations.php" class="btn-primary">Crear nueva reserva</a>
+                    <a href="../reservas/reservations.php" class="btn-primary">Crear nueva reserva</a>
                 </div>
             </section>
         </div>
@@ -104,7 +104,7 @@ if (!isset($_SESSION['usuario_id'])) {
         }
 
         function cargarReservas() {
-            fetch('get_reservas.php', { credentials: 'include' })
+            fetch('../reservas/get_reservas.php', { credentials: 'include' })
                 .then(r => r.json())
                 .then(data => { reservas = data; mostrarReservas(); })
                 .catch(() => toast('Error al cargar reservas', 'error'));
@@ -161,12 +161,12 @@ if (!isset($_SESSION['usuario_id'])) {
         function pedirEliminar(id) { abrirConfirm('¿Eliminar esta reserva? No se puede deshacer.', () => eliminarReserva(id)); }
 
         function cancelarReserva(id) {
-            fetch('cancelar_reserva.php', { method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include', body: JSON.stringify({reserva_id:id}) })
+            fetch('../reservas/cancelar_reserva.php', { method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include', body: JSON.stringify({reserva_id:id}) })
             .then(r => r.json()).then(d => { toast(d.success ? 'Reserva cancelada.' : d.error, d.success ? 'ok' : 'error'); if(d.success) cargarReservas(); });
         }
 
         function eliminarReserva(id) {
-            fetch('eliminar_reserva.php', { method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include', body: JSON.stringify({reserva_id:id}) })
+            fetch('../reservas/eliminar_reserva.php', { method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include', body: JSON.stringify({reserva_id:id}) })
             .then(r => r.json()).then(d => { toast(d.success ? 'Reserva eliminada.' : d.error, d.success ? 'ok' : 'error'); if(d.success) cargarReservas(); });
         }
 
@@ -188,7 +188,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
         document.getElementById('editForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            fetch('actualizar_reserva.php', {
+            fetch('../reservas/actualizar_reserva.php', {
                 method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include',
                 body: JSON.stringify({
                     reserva_id: document.getElementById('editReservaId').value,

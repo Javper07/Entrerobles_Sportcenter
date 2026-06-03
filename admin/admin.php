@@ -3,24 +3,24 @@ session_start();
 
 // Verificar sesión
 if (!isset($_SESSION['usuario_id'])) {
-    header('Location: login.html');
+    header('Location: ../login.html');
     exit;
 }
 
 // Verificar rol admin
-require 'db.php';
+require '../comun/db.php';
 try {
     $pdo = getDbConnection();
     $stmt = $pdo->prepare("SELECT es_admin, nombre FROM usuarios WHERE id = :id");
     $stmt->execute([':id' => $_SESSION['usuario_id']]);
     $u = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$u || !$u['es_admin']) {
-        header('Location: index.html');
+        header('Location: ../index.html');
         exit;
     }
     $adminNombre = $u['nombre'];
 } catch (Exception $e) {
-    header('Location: index.html');
+    header('Location: ../index.html');
     exit;
 }
 ?><!DOCTYPE html>
@@ -30,7 +30,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="Styles/adminStyles.css">
+    <link rel="stylesheet" href="../Styles/adminStyles.css">
     <title>Panel de Administración — Polideportivo Entrerobles</title>
 </head>
 <body>
@@ -38,7 +38,7 @@ try {
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-logo">
-            <img src="images/logoERwhite.png" alt="Logo">
+            <img src="../images/logoERwhite.png" alt="Logo">
             <span>Admin</span>
         </div>
         <nav class="sidebar-nav">
@@ -58,8 +58,8 @@ try {
         </nav>
         <div class="sidebar-footer">
             <span class="admin-name"><i class="fas fa-user-shield"></i> <?= htmlspecialchars($adminNombre) ?></span>
-            <a href="index.html" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver al sitio</a>
-            <a href="logout.php" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+            <a href="../index.html" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver al sitio</a>
+            <a href="../usuarios/logout.php" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
         </div>
     </aside>
 

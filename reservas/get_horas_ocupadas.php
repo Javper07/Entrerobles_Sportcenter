@@ -10,7 +10,7 @@ if (!$instalacion || !$fecha) {
     exit;
 }
 
-require 'db.php';
+require '../comun/db.php';
 
 try {
     $pdo = getDbConnection();

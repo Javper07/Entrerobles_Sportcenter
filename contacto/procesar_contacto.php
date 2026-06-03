@@ -25,7 +25,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-require 'db.php';
+require '../comun/db.php';
 
 try {
     $pdo = getDbConnection();

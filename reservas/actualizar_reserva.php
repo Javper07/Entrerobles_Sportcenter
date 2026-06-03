@@ -28,7 +28,7 @@ if (!$reserva_id || !$fecha || !$hora_inicio || !$hora_fin) {
     exit;
 }
 
-require 'db.php';
+require '../comun/db.php';
 
 try {
     $pdo = getDbConnection();

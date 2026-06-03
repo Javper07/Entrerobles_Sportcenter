@@ -20,7 +20,7 @@ if (!$reserva_id) {
     exit;
 }
 
-require 'db.php';
+require '../comun/db.php';
 
 try {
     $pdo = getDbConnection();

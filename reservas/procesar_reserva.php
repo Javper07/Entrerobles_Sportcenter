@@ -1,9 +1,9 @@
 <?php
-require_once 'db.php';
+require_once '../comun/db.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: reservations.php');
+    header('Location: ../reservas/reservations.php');
     exit;
 }
 
@@ -43,7 +43,7 @@ try {
     $inst = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$inst) {
-        header('Location: reservations.php?reserva=error');
+        header('Location: ../reservas/reservations.php?reserva=error');
         exit;
     }
     $instalacion_id = $inst['id'];
@@ -65,7 +65,7 @@ try {
     ]);
 
     if ($stmt->fetch()) {
-        header('Location: reservations.php?reserva=ocupado');
+        header('Location: ../reservas/reservations.php?reserva=ocupado');
         exit;
     }
 
@@ -111,7 +111,7 @@ try {
         ':observaciones'  => $observaciones,
     ]);
 
-    header('Location: reservations.php?reserva=ok');
+    header('Location: ../reservas/reservations.php?reserva=ok');
     exit;
 
 } catch (PDOException $e) {

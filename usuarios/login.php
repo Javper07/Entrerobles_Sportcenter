@@ -5,7 +5,7 @@ session_start();
 
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: login.html');
+    header('Location: ../login.html');
     exit;
 }
 
@@ -14,11 +14,11 @@ $password = $_POST['password'] ?? '';
 
 
 if (!$email || !$password || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    header('Location: login.html?error=invalid&email=' . urlencode($email));
+    header('Location: ../login.html?error=invalid&email=' . urlencode($email));
     exit;
 }
 
-require 'db.php';
+require '../comun/db.php';
 
 try {
     $pdo = getDbConnection();
@@ -29,12 +29,12 @@ try {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$user) {
-        header('Location: login.html?error=invalid&email=' . urlencode($email));
+        header('Location: ../login.html?error=invalid&email=' . urlencode($email));
         exit;
     }
 
     if (empty($user['password']) || !password_verify($password, $user['password'])) {
-        header('Location: login.html?error=invalid&email=' . urlencode($email));
+        header('Location: ../login.html?error=invalid&email=' . urlencode($email));
         exit;
     }
 
@@ -46,13 +46,13 @@ try {
 
     // Redirigir según rol
     if (!empty($user['es_admin'])) {
-        header('Location: admin.php');
+        header('Location: ../admin/admin.php');
     } else {
-        header('Location: reservations.php');
+        header('Location: ../reservas/reservations.php');
     }
     exit;
 
 } catch (PDOException $e) {
-    header('Location: login.html?error=server&email=' . urlencode($email));
+    header('Location: ../login.html?error=server&email=' . urlencode($email));
     exit;
 }
