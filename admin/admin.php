@@ -1,36 +1,39 @@
 <?php
 session_start();
 
-// Verificar sesión
+// Verifica la sesion para que el usuario que entre a esta página sea un admin, si no lo es, lo redirige al login
 if (!isset($_SESSION['usuario_id'])) {
     header('Location: ../login.html');
     exit;
 }
 
-// Verificar rol admin
+// Verificar rol admin 
 require '../comun/db.php';
 try {
-    $pdo = getDbConnection();
-    $stmt = $pdo->prepare("SELECT es_admin, nombre FROM usuarios WHERE id = :id");
-    $stmt->execute([':id' => $_SESSION['usuario_id']]);
-    $u = $stmt->fetch(PDO::FETCH_ASSOC);
-    if (!$u || !$u['es_admin']) {
-        header('Location: ../index.html');
+    $pdo = getDbConnection(); //Se toma la conexión a la base de datos usando la función getDbConnection() del archivo db.php
+    $stmt = $pdo->prepare("SELECT es_admin, nombre FROM usuarios WHERE id = :id"); //prepara la query sql para verificar si el usuario es admin y obtener su nombre
+    $stmt->execute([':id' => $_SESSION['usuario_id']]); //ejecuta la consulta con el id del usuario logueado
+    $usuario = $stmt->fetch(PDO::FETCH_ASSOC); //obtiene el resultado de la consulta como un array asociativo
+    if (!$usuario || !$usuario['es_admin']) {
+        header('Location: ../index.html'); //
         exit;
     }
-    $adminNombre = $u['nombre'];
+    $adminNombre = $usuario['nombre'];
 } catch (Exception $e) {
     header('Location: ../index.html');
     exit;
 }
-?><!DOCTYPE html>
+?>
+
+
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="../Styles/adminStyles.css">
+    <link rel="stylesheet" href="../styles/adminStyles.css">
     <title>Panel de Administración — Polideportivo Entrerobles</title>
 </head>
 <body>

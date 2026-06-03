@@ -3,7 +3,7 @@ session_start();
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['usuario_id'])) {
-    http_response_code(401);
+    http_response_code(401); 
     echo json_encode(['error' => 'No autenticado']);
     exit;
 }
@@ -28,10 +28,11 @@ try {
     // ── RESUMEN ───────────────────────────────────────────────────────────
     if ($seccion === 'resumen') {
 
-        // Una sola query con CTEs para todos los KPIs y listas
+        // Una sola query con CTEs para todos las reservas activas y listas
+        //los kpis son 
         $stmt = $pdo->query("
             WITH
-            kpi AS (
+            reservasActivas AS (
                 SELECT
                     COUNT(*) FILTER (WHERE estado != 'cancelada')                              AS reservas_activas,
                     COUNT(*) FILTER (WHERE fecha = CURRENT_DATE AND estado != 'cancelada')     AS reservas_hoy,
@@ -49,19 +50,7 @@ try {
                 WHERE r.fecha = CURRENT_DATE
                 ORDER BY r.hora_inicio ASC
             ),
-            proximas AS (
-                SELECT r.id, u.nombre AS usuario,
-                       i.nombre AS instalacion,
-                       r.fecha, r.hora_inicio, r.hora_fin, r.estado
-                FROM reservas r
-                JOIN usuarios u    ON r.usuario_id     = u.id
-                JOIN instalaciones i ON r.instalacion_id = i.id
-                WHERE r.fecha > CURRENT_DATE
-                  AND r.fecha <= CURRENT_DATE + INTERVAL '7 days'
-                  AND r.estado != 'cancelada'
-                ORDER BY r.fecha ASC, r.hora_inicio ASC
-                LIMIT 20
-            )
+            
             SELECT
                 (SELECT row_to_json(k) FROM kpi k)          AS kpi,
                 (SELECT json_agg(h) FROM hoy h)             AS reservas_hoy_lista,
