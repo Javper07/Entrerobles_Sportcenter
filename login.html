@@ -9,7 +9,7 @@
     <style>@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');</style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>Inicio de Sesión — Ayuntamiento de Entrerobles</title>
-    <script src="header.js"></script>
+    <script src="comun/header.js"></script>
 </head>
 <body>
     <!--Cabecera de la web-->
@@ -38,7 +38,7 @@
         <img id="unknownUserImage" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Usuario Desconocido">     
         <div class="login-form">
             <h2>Iniciar Sesión</h2>
-            <form action="login.php" method="POST">
+            <form action="usuarios/login.php" method="POST">
                 <input type="email" name="usuario" placeholder="Correo" required>
                 <input type="password" name="password" placeholder="Contraseña" required>
                 <div class="remember-container">
