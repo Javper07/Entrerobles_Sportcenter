@@ -1,6 +1,6 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: register.html');
+    header('Location: ../register.html');
     exit;
 }
 
@@ -12,16 +12,16 @@ $password = $_POST['password'] ?? '';
 $confirmPassword = $_POST['confirm_password'] ?? '';
 
 if (!$name || !$email || !$password || !$confirmPassword || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    header('Location: register.html?error=invalid&email=' . urlencode($email));
+    header('Location: ../register.html?error=invalid&email=' . urlencode($email));
     exit;
 }
 
 if ($password !== $confirmPassword) {
-    header('Location: register.html?error=password_mismatch&email=' . urlencode($email));
+    header('Location: ../register.html?error=password_mismatch&email=' . urlencode($email));
     exit;
 }
 
-require 'db.php';
+require '../comun/db.php';
 
 try {
     $pdo = getDbConnection();
@@ -31,7 +31,7 @@ try {
     $stmt->execute([':email' => $email]);
 
     if ($stmt->fetch()) {
-        header('Location: register.html?error=exists&email=' . urlencode($email));
+        header('Location: ../register.html?error=exists&email=' . urlencode($email));
         exit;
     }
 
@@ -46,9 +46,9 @@ try {
         ':password' => $hashedPassword,
     ]);
 
-    header('Location: login.html?email=' . urlencode($email) . '&registered=1');
+    header('Location: ../login.html?email=' . urlencode($email) . '&registered=1');
     exit;
 } catch (PDOException $e) {
-    header('Location: register.html?error=server&email=' . urlencode($email));
+    header('Location: ../register.html?error=server&email=' . urlencode($email));
     exit;
 }

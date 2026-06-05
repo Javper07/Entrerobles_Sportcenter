@@ -20,10 +20,12 @@
     </style>
 
     <title>Polideportivo Municipal — Entrerobles</title>
+    <!-- Página de inicio principal. carga diseño, fuentes y iconos. -->
 </head>
 <body>
 
-    <!--Cabecera de la web-->
+    <!-- Cabecera de la web: siempre muestra logo, título y botones principales. -->
+    <!-- El header no usa sesión aquí; muestra enlaces a login/register. -->
     <div id="header"> 
         <img src="images/logoERwhite.png" alt="Logo Escudo" id="logo_escudo">
         <h1>POLIDEPORTIVO ENTREROBLES</h1>
@@ -47,14 +49,14 @@
     </div>
     
 
-    <!--Sección de las instalaciones deportivas-->
+    <!-- Sección de bienvenida: texto principal y botones de acción. -->
     <div class="sectionTitle_instalaciones">   
         <div id="principalSection">
             <h2>BIENVENIDO AL POLIDEPORTIVO ENTREROBLES</h2>
             <h4>Descubre nuestras instalaciones deportivas y reserva tu espacio</h4>
            
             <div id="principalButtons">
-                <button href="reservations.html" id="ReserveNow" >RESERVE YA</button>
+                <button href="reservas/reservations.php" id="ReserveNow" >RESERVE YA</button>
                 <button href="#horariosTitle"id="horariosButton" >Horarios</button>
             </div>
         </div>
@@ -69,13 +71,13 @@
     <section id="section_widgets_deportes">
         
         <div class="container_widget_deporte">
-            <a href="reservations.html" class="widget_deporte_link">
+            <a href="reservas/reservations.php" class="widget_deporte_link">
               <div class="widget_deporte">
                   <img src="images/gymInterior.jpeg" alt="Imagen del gimnasio" class="widget_image">
                   <p>Equipado con máquinas de última generación para entrenamiento de fuerza y cardio.</p>
               </div>
             </a>
-            <a href="reservations.html" class="widget_deporte_link">
+            <a href="reservas/reservations.php" class="widget_deporte_link">
               <div class="widget_deporte">
                   <img src="images/poolInterior.jpeg" alt="Imagen de la piscina interior" class="widget_image">
                   <p>Ideal para natación, clases de aquagym y actividades acuáticas durante todo el año.</p>
@@ -84,13 +86,13 @@
         </div>  
 
         <div class="container_widget_deporte">
-            <a href="reservations.html" class="widget_deporte_link">
+            <a href="reservas/reservations.php" class="widget_deporte_link">
               <div class="widget_deporte">
                   <img src="images/sportCourt.jpeg" alt="Imagen de la pistas" class="widget_image">
                   <p>Disponemos de pistas para fútbol, baloncesto, tenis y pádel, perfectas para tus partidos y entrenamientos.</p>
               </div>
             </a>
-            <a href="reservations.html" class="widget_deporte_link">
+            <a href="reservas/reservations.php" class="widget_deporte_link">
               <div class="widget_deporte">
                    <img src="images/yogaRoom.jpeg" alt="Imagen de la sala de yoga" class="widget_image">
                   <p>Espacios versátiles para clases de yoga, pilates, zumba y otras actividades grupales.</p>
@@ -100,7 +102,7 @@
 
     </section>
 
-    <!--Seccion de los horarios de las instalaciones-->
+    <!-- Sección de horarios: muestra datos fijos de apertura. -->
 
     <div id="horariosTitle">
         <h2>HORARIOS DE NUESTRAS INSTALACIONES</h2>
@@ -128,6 +130,7 @@
     </div>
     
     <!--Footer de la web-->
+    <!-- Footer del sitio: información de contacto, ayuda y redes sociales. -->
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-row">
