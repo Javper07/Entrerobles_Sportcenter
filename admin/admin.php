@@ -141,6 +141,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mensaje_error = "Error al actualizar el usuario.";
         }
     }
+    // Crear reserva
+    if (isset($_POST['crear_reserva'])) {
+        $usuario_id    = (int)  $_POST['nuevo_usuario_id'];
+        $instalacion_id= (int)  $_POST['nuevo_instalacion_id'];
+        $fecha         = trim(  $_POST['nuevo_fecha'] ?? '');
+        $hora_inicio   = trim(  $_POST['nuevo_hora_inicio'] ?? '');
+        $hora_fin      = trim(  $_POST['nuevo_hora_fin'] ?? '');
+        $participantes = (int) ($_POST['nuevo_participantes'] ?? 1);
+        $estado        = trim(  $_POST['nuevo_estado'] ?? 'activa');
+        $observaciones = trim(  $_POST['nuevo_observaciones'] ?? '');
+
+        try {
+            $stmt = $pdo->prepare("
+                INSERT INTO reservas (usuario_id, instalacion_id, fecha, hora_inicio, hora_fin, participantes, estado, observaciones)
+                VALUES (:uid, :iid, :fecha, :hi, :hf, :part, :est, :obs)
+            ");
+            $stmt->execute([
+                ':uid'  => $usuario_id,
+                ':iid'  => $instalacion_id,
+                ':fecha'=> $fecha,
+                ':hi'   => $hora_inicio,
+                ':hf'   => $hora_fin,
+                ':part' => $participantes,
+                ':est'  => $estado,
+                ':obs'  => $observaciones ?: null,
+            ]);
+            $mensaje_ok = "Reserva creada correctamente.";
+        } catch (Exception $e) {
+            $mensaje_error = "Error al crear la reserva.";
+        }
+    }
+
+    // Crear usuario
+    if (isset($_POST['crear_usuario'])) {
+        $nombre   = trim($_POST['nuevo_nombre']    ?? '');
+        $email    = trim($_POST['nuevo_email']     ?? '');
+        $telefono = trim($_POST['nuevo_telefono']  ?? '');
+        $password = trim($_POST['nuevo_password']  ?? '');
+        $es_admin = (int)($_POST['nuevo_es_admin'] ?? 0);
+
+        if (!$nombre || !$email || !$password) {
+            $mensaje_error = "Nombre, email y contraseña son obligatorios.";
+        } else {
+            try {
+                $stmt = $pdo->prepare("SELECT id FROM usuarios WHERE email = :email");
+                $stmt->execute([':email' => $email]);
+                if ($stmt->fetch()) {
+                    $mensaje_error = "Ya existe un usuario con ese email.";
+                } else {
+                    $hash = password_hash($password, PASSWORD_DEFAULT);
+                    $stmt = $pdo->prepare("
+                        INSERT INTO usuarios (nombre, email, telefono, password, es_admin)
+                        VALUES (:nombre, :email, :telefono, :password, :es_admin)
+                    ");
+                    $stmt->execute([
+                        ':nombre'   => $nombre,
+                        ':email'    => $email,
+                        ':telefono' => $telefono ?: null,
+                        ':password' => $hash,
+                        ':es_admin' => $es_admin,
+                    ]);
+                    $mensaje_ok = "Usuario creado correctamente.";
+                }
+            } catch (Exception $e) {
+                $mensaje_error = "Error al crear el usuario.";
+            }
+        }
+    }
 }
 
 // ── 4. Consultas según la sección activa ──────────────────
@@ -152,9 +220,12 @@ if ($seccion === 'resumen') {
     $datos['usuarios']         = $pdo->query("SELECT COUNT(*) FROM usuarios")->fetchColumn();
 
     $stmt = $pdo->query("
-        SELECT r.*, u.nombre AS usuario, u.email
-        FROM reservas r JOIN usuarios u ON r.usuario_id = u.id
-        WHERE r.fecha = CURRENT_DATE ORDER BY r.hora_inicio
+        SELECT r.*, u.nombre AS usuario, u.email, i.nombre AS instalacion
+        FROM reservas r
+        JOIN usuarios u ON r.usuario_id = u.id
+        JOIN instalaciones i ON r.instalacion_id = i.id
+        WHERE r.fecha = CURRENT_DATE
+        ORDER BY r.hora_inicio
     ");
     $datos['reservas_hoy_lista'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -406,6 +477,68 @@ if ($seccion === 'reservas') {
                     <i class="fas fa-times"></i> Limpiar
                 </a>
             </form>
+
+            <div class="crear-form-wrap">
+    <?php if (isset($_GET['nueva_reserva'])): ?>
+    <form method="POST" action="admin.php?sec=reservas" class="form-editar-inline">
+        <input type="hidden" name="crear_reserva" value="1">
+        <div class="form-editar-grid">
+            <label>Usuario
+                <select name="nuevo_usuario_id" required>
+                    <?php
+                    $usuarios_list = $pdo->query("SELECT id, nombre FROM usuarios ORDER BY nombre")->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($usuarios_list as $ul):
+                    ?>
+                        <option value="<?= $ul['id'] ?>"><?= htmlspecialchars($ul['nombre']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+            <label>Instalación
+                <select name="nuevo_instalacion_id" required>
+                    <?php
+                    $inst_list = $pdo->query("SELECT id, nombre FROM instalaciones ORDER BY nombre")->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($inst_list as $il):
+                    ?>
+                        <option value="<?= $il['id'] ?>"><?= htmlspecialchars($il['nombre']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+            <label>Fecha
+                <input type="date" name="nuevo_fecha" required>
+            </label>
+            <label>Hora inicio
+                <input type="time" name="nuevo_hora_inicio" required>
+            </label>
+            <label>Hora fin
+                <input type="time" name="nuevo_hora_fin" required>
+            </label>
+            <label>Participantes
+                <input type="number" name="nuevo_participantes" value="1" min="1" max="50" required>
+            </label>
+            <label>Estado
+                <select name="nuevo_estado">
+                    <option value="activa">Activa</option>
+                    <option value="cancelada">Cancelada</option>
+                    <option value="completada">Completada</option>
+                </select>
+            </label>
+            <label style="grid-column:1/-1">Observaciones
+                <textarea name="nuevo_observaciones"></textarea>
+            </label>
+        </div>
+        <div class="form-editar-btns">
+            <a href="admin.php?sec=reservas" class="btn-cancelar">Cancelar</a>
+            <button type="submit" class="btn-guardar">
+                <i class="fas fa-plus"></i> Crear reserva
+            </button>
+        </div>
+    </form>
+    <?php else: ?>
+        <a href="admin.php?sec=reservas&nueva_reserva=1" class="btn-guardar">
+            <i class="fas fa-plus"></i> Nueva reserva
+        </a>
+    <?php endif; ?>
+</div>
             <div class="tabla-wrap">
                 <table class="tabla">
                     <thead><tr>
@@ -514,6 +647,43 @@ if ($seccion === 'reservas') {
                     <i class="fas fa-times"></i> Limpiar
                 </a>
             </form>
+            <div class="crear-form-wrap">
+    <?php if (isset($_GET['nuevo_usuario'])): ?>
+    <form method="POST" action="admin.php?sec=usuarios" class="form-editar-inline">
+        <input type="hidden" name="crear_usuario" value="1">
+        <div class="form-editar-grid">
+            <label>Nombre
+                <input type="text" name="nuevo_nombre" required>
+            </label>
+            <label>Email
+                <input type="email" name="nuevo_email" required>
+            </label>
+            <label>Teléfono
+                <input type="text" name="nuevo_telefono">
+            </label>
+            <label>Contraseña
+                <input type="password" name="nuevo_password" required>
+            </label>
+            <label>Rol
+                <select name="nuevo_es_admin">
+                    <option value="0">Usuario</option>
+                    <option value="1">Admin</option>
+                </select>
+            </label>
+        </div>
+        <div class="form-editar-btns">
+            <a href="admin.php?sec=usuarios" class="btn-cancelar">Cancelar</a>
+            <button type="submit" class="btn-guardar">
+                <i class="fas fa-plus"></i> Crear usuario
+            </button>
+        </div>
+            </form>
+            <?php else: ?>
+                <a href="admin.php?sec=usuarios&nuevo_usuario=1" class="btn-guardar">
+                    <i class="fas fa-plus"></i> Nuevo usuario
+                </a>
+            <?php endif; ?>
+        </div>
             <div class="tabla-wrap">
                 <table class="tabla">
                     <thead><tr>
