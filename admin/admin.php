@@ -53,12 +53,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Editar reserva
     if (isset($_POST['guardar_reserva_id'])) {
         $id           = (int)   $_POST['guardar_reserva_id'];
-        $fecha        = trim(   $_POST['fecha']        ?? '');
-        $hora_inicio  = trim(   $_POST['hora_inicio']  ?? '');
-        $hora_fin     = trim(   $_POST['hora_fin']     ?? '');
+        $fecha        = trim(   $_POST['fecha'] ?? '');
+        $hora_inicio  = trim(   $_POST['hora_inicio'] ?? '');
+        $hora_fin     = trim(   $_POST['hora_fin'] ?? '');
         $participantes= (int)   $_POST['participantes'] ?? 1;
-        $estado       = trim(   $_POST['estado']       ?? 'activa');
-        $observaciones= trim(   $_POST['observaciones']?? '');
+        $estado       = trim(   $_POST['estado'] ?? 'activa');
+        $observaciones= trim(   $_POST['observaciones'] ?? '');
 
         $estados_validos = ['activa', 'cancelada', 'completada'];
         if (!in_array($estado, $estados_validos)) $estado = 'activa';
@@ -102,6 +102,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     }
+
+    // Editar usuario
+    if (isset($_POST['guardar_usuario_id'])) {
+        $id       = (int)  $_POST['guardar_usuario_id'];
+        $nombre   = trim(  $_POST['nombre']   ?? '');
+        $email    = trim(  $_POST['email']    ?? '');
+        $telefono = trim(  $_POST['telefono'] ?? '');
+        $es_admin = (int) ($_POST['es_admin'] ?? 0);
+
+        // No puede quitarse su propio rol de admin
+        if ($id === (int)$_SESSION['usuario_id']) {
+            $es_admin = 1;
+        }
+
+        try {
+            // Verificar email único
+            $stmt = $pdo->prepare("SELECT id FROM usuarios WHERE email = :email AND id != :id");
+            $stmt->execute([':email' => $email, ':id' => $id]);
+            if ($stmt->fetch()) {
+                $mensaje_error = "Ya existe otro usuario con ese email.";
+            } else {
+                $stmt = $pdo->prepare("
+                    UPDATE usuarios
+                    SET nombre = :nombre, email = :email, telefono = :telefono, es_admin = :es_admin
+                    WHERE id = :id
+                ");
+                $stmt->execute([
+                    ':nombre'   => $nombre,
+                    ':email'    => $email,
+                    ':telefono' => $telefono ?: null,
+                    ':es_admin' => $es_admin,
+                    ':id'       => $id,
+                ]);
+                $mensaje_ok = "Usuario actualizado correctamente.";
+            }
+        } catch (Exception $e) {
+            $mensaje_error = "Error al actualizar el usuario.";
+        }
+    }
 }
 
 // ── 4. Consultas según la sección activa ──────────────────
@@ -120,26 +159,108 @@ if ($seccion === 'resumen') {
     $datos['reservas_hoy_lista'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-if ($seccion === 'reservas') {
-    $stmt = $pdo->query("
-        SELECT r.*, u.nombre AS usuario, u.email,
-               i.nombre AS instalacion
-        FROM reservas r
-        JOIN usuarios u ON r.usuario_id = u.id
-        JOIN instalaciones i ON r.instalacion_id = i.id
-        ORDER BY r.fecha DESC, r.hora_inicio
-    ");
+
+// ── Filtros para las secciones ──────────────────────────────────────────────────────────
+if ($seccion === 'usuarios') {
+
+    //Recogemos los filtros de busqueda y usamos trim para eliminar espacios 
+    //si el parametro no existe en la url, le ponemos cadena vacia para evitar errores
+    $filtro_id = trim($_GET['filtro_id'] ?? '');
+    $filtro_nombre = trim($_GET['filtro_nombre'] ?? '');
+    $filtro_email  = trim($_GET['filtro_email'] ?? '');
+
+    //COnsulta sql
+    $sql= "SELECT u.*, COUNT(r.id) AS total_reservas
+    FROM usuarios u
+    LEFT JOIN reservas r ON r.usuario_id = u.id";
+
+    //Ahora guardamos los parametros de busqueda en un array para luego pasarlos a la consulta preparada
+    $params = [];
+    $condiciones = []; //array donde iremos guardando las condiciones de busqueda
+
+    //Si el admin ha puesto algun filtro, lo añadimos a las condiciones de busqueda y a los parametros de la consulta preparada
+    if ($filtro_id !== '' && ctype_digit($filtro_id)) {
+        $condiciones[] = "CAST(u.id AS TEXT) LIKE :filtro_id"; //CAST a texto para permitir busqueda parcial;
+        $params[':id'] = (int)$filtro_id;
+
+    }
+    //si el admin ha puesto algun filtro, lo añadimos a las condiciones de busqueda y a los parametros de la consulta preparada
+    if ($filtro_nombre !== '') {
+        $condiciones[] = "u.nombre LIKE :filtro_nombre";
+        $params[':filtro_nombre'] = "%{$filtro_nombre}%";
+    }
+    //si el admin ha puesto algun filtro, lo añadimos a las condiciones de busqueda y a los parametros de la consulta preparada
+    if ($filtro_email !== '') {
+        $condiciones[] = "u.email LIKE :filtro_email";
+        $params[':filtro_email'] = "%{$filtro_email}%";
+    }
+
+    // Añadimos las condiciones a la consulta SQL
+    if (!empty($condiciones)) {
+        $sql .= " WHERE " . implode(" AND ", $condiciones);
+    }
+
+    $sql .= " GROUP BY u.id ORDER BY u.nombre";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
     $datos['lista'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $datos['filtro_id'] = $filtro_id;
+    $datos['filtro_nombre'] = $filtro_nombre;
+    $datos['filtro_email'] = $filtro_email;
+
 }
 
-if ($seccion === 'usuarios') {
-    $stmt = $pdo->query("
-        SELECT u.*, COUNT(r.id) AS total_reservas
-        FROM usuarios u
-        LEFT JOIN reservas r ON r.usuario_id = u.id
-        GROUP BY u.id ORDER BY u.nombre
-    ");
+if ($seccion === 'reservas') {
+
+
+    //Recogemos los filtros de busqueda y usamos trim para eliminar espacios 
+    //si el parametro no existe en la url, le ponemos cadena vacia para evitar errores
+    $filtro_nombre = trim($_GET['filtro_nombre'] ?? '');
+    $filtro_pista  = trim($_GET['filtro_pista'] ?? '');
+    $filtro_fecha  = trim($_GET['filtro_fecha'] ?? '');
+
+    //COnsulta sql
+    $sql= "SELECT r.*, u.nombre AS usuario, u.email,
+           i.nombre AS instalacion
+    FROM reservas r
+    JOIN usuarios u ON r.usuario_id = u.id
+    JOIN instalaciones i ON r.instalacion_id = i.id";
+
+    //Ahora guardamos los parametros de busqueda en un array para luego pasarlos a la consulta preparada
+    $params = [];
+    $condiciones = []; //array donde iremos guardando las condiciones de busqueda
+
+    //si el admin ha puesto algun filtro, lo añadimos a las condiciones de busqueda y a los parametros de la consulta preparada
+    if ($filtro_nombre !== '') {
+        $condiciones[] = "u.nombre LIKE :filtro_nombre";
+        $params[':filtro_nombre'] = "%{$filtro_nombre}%";
+    }
+    //si el admin ha puesto algun filtro, lo añadimos a las condiciones de busqueda y a los parametros de la consulta preparada
+    if ($filtro_pista !== '') {
+        $condiciones[] = "i.nombre LIKE :filtro_pista";
+        $params[':filtro_pista'] = "%{$filtro_pista}%";
+    }
+
+    if ($filtro_fecha !== '') {
+        $condiciones[] = "r.fecha = :filtro_fecha";
+        $params[':filtro_fecha'] = $filtro_fecha;
+    }
+
+    // Añadimos las condiciones a la consulta SQL
+    if (!empty($condiciones)) {
+        $sql .= " WHERE " . implode(" AND ", $condiciones);
+    }
+
+    $sql .= " ORDER BY r.fecha DESC, r.hora_inicio";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
     $datos['lista'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $datos['filtro_fecha'] = $filtro_fecha;
+    $datos['filtro_nombre'] = $filtro_nombre;
+    $datos['filtro_pista']  = $filtro_pista;
+
 }
 ?>
 <!DOCTYPE html>
@@ -262,6 +383,29 @@ if ($seccion === 'usuarios') {
             <h2><i class="fas fa-list"></i> Todas las reservas
                 <span class="count"><?= count($datos['lista']) ?></span>
             </h2>
+            <form method="GET" action="admin.php" class="filtro-form">
+                <input type="hidden" name="sec" value="reservas">
+                <input type="date" name="filtro_fecha" value="<?= htmlspecialchars($datos['filtro_fecha'] ?? '') ?>">
+                <input type="text" name="filtro_nombre" placeholder="Nombre" value="<?= htmlspecialchars($datos['filtro_nombre'] ?? '') ?>">
+                <select name="filtro_pista">
+                    <option value="">Todas las pistas</option>
+                    <?php
+                    // Obtener lista de pistas para el filtro
+                    $pistas = $pdo->query("SELECT id, nombre FROM instalaciones ORDER BY nombre")->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($pistas as $pista):
+                    ?>
+                        <option value="<?= htmlspecialchars($pista['nombre']) ?>"
+                            <?= (isset($datos['filtro_pista']) && $datos['filtro_pista'] === $pista['nombre']) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($pista['nombre']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                
+                <button type="submit"><i class="fas fa-search"></i> Filtrar</button>
+                <a href="admin.php?sec=reservas" class="btn-cancelar">
+                    <i class="fas fa-times"></i> Limpiar
+                </a>
+            </form>
             <div class="tabla-wrap">
                 <table class="tabla">
                     <thead><tr>
@@ -361,6 +505,15 @@ if ($seccion === 'usuarios') {
             <h2><i class="fas fa-users"></i> Usuarios registrados
                 <span class="count"><?= count($datos['lista']) ?></span>
             </h2>
+            <form method="GET" action="admin.php" class="filtro-form">
+                <input type="hidden" name="sec" value="usuarios">
+                <input type="text" name="filtro_nombre" placeholder="Nombre" value="<?= htmlspecialchars($datos['filtro_nombre'] ?? '') ?>">
+                <input type="text" name="filtro_email" placeholder="Email" value="<?= htmlspecialchars($datos['filtro_email'] ?? '') ?>">
+                <button type="submit"><i class="fas fa-search"></i> Filtrar</button>
+                <a href="admin.php?sec=usuarios" class="btn-cancelar">
+                    <i class="fas fa-times"></i> Limpiar
+                </a>
+            </form>
             <div class="tabla-wrap">
                 <table class="tabla">
                     <thead><tr>
@@ -368,6 +521,7 @@ if ($seccion === 'usuarios') {
                         <th>Teléfono</th><th>Reservas</th><th>Rol</th><th>Acciones</th>
                     </tr></thead>
                     <tbody>
+                    
                     <?php foreach ($datos['lista'] as $u): ?>
                         <tr>
                             <td><?= (int)$u['id'] ?></td>
@@ -382,9 +536,15 @@ if ($seccion === 'usuarios') {
                             </td>
                             <td class="td-acciones">
                                 <?php if ((int)$u['id'] !== (int)$_SESSION['usuario_id']): ?>
+                                    <!-- Botón editar -->
+                                    <a href="admin.php?sec=usuarios&editar=<?= $u['id'] ?>"
+                                    class="btn-accion btn-editar" title="Editar">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
+                                    <!-- Botón eliminar -->
                                     <form method="POST" action="admin.php?sec=usuarios"
-                                          style="display:inline"
-                                          onsubmit="return confirm('¿Eliminar al usuario <?= htmlspecialchars($u['nombre'], ENT_QUOTES) ?>?')">
+                                        style="display:inline"
+                                        onsubmit="return confirm('¿Eliminar al usuario <?= htmlspecialchars($u['nombre'], ENT_QUOTES) ?>?')">
                                         <input type="hidden" name="eliminar_usuario_id" value="<?= $u['id'] ?>">
                                         <button type="submit" class="btn-accion btn-eliminar" title="Eliminar">
                                             <i class="fas fa-trash"></i>
@@ -395,6 +555,39 @@ if ($seccion === 'usuarios') {
                                 <?php endif; ?>
                             </td>
                         </tr>
+
+                        <?php if (isset($_GET['editar']) && (int)$_GET['editar'] === (int)$u['id']): ?>
+                        <tr class="fila-editar">
+                            <td colspan="7">
+                                <form method="POST" action="admin.php?sec=usuarios" class="form-editar-inline">
+                                    <input type="hidden" name="guardar_usuario_id" value="<?= $u['id'] ?>">
+                                    <div class="form-editar-grid">
+                                        <label>Nombre
+                                            <input type="text" name="nombre" value="<?= htmlspecialchars($u['nombre']) ?>" required>
+                                        </label>
+                                        <label>Email
+                                            <input type="email" name="email" value="<?= htmlspecialchars($u['email']) ?>" required>
+                                        </label>
+                                        <label>Teléfono
+                                            <input type="text" name="telefono" value="<?= htmlspecialchars($u['telefono'] ?? '') ?>">
+                                        </label>
+                                        <label>Rol
+                                            <select name="es_admin">
+                                                <option value="0" <?= !$u['es_admin'] ? 'selected' : '' ?>>Usuario</option>
+                                                <option value="1" <?= $u['es_admin']  ? 'selected' : '' ?>>Admin</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="form-editar-btns">
+                                        <a href="admin.php?sec=usuarios" class="btn-cancelar">Cancelar</a>
+                                        <button type="submit" class="btn-guardar">
+                                            <i class="fas fa-save"></i> Guardar
+                                        </button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                     </tbody>
                 </table>

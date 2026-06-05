@@ -324,3 +324,83 @@ body {
 .tipo-incidencia { background: #fef3c7; color: #92400e; }
 .tipo-sugerencia { background: #d1fae5; color: #065f46; }
 .tipo-consulta   { background: #e0e7ff; color: #3730a3; }
+
+/* Barra de filtros en la sección usuarios */
+.filtro-form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+}
+
+.filtro-form input[type="text"] {
+    padding: 0.45rem 0.8rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    width: 200px;
+    transition: border-color 0.2s;
+}
+
+.filtro-form input[type="text"]:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+}
+
+.filtro-form button[type="submit"] {
+    padding: 0.45rem 1rem;
+    background: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: background 0.2s;
+}
+
+.filtro-form button[type="submit"]:hover {
+    background: #4f46e5;
+}
+
+select[name="filtro_pista"] {
+    appearance: none;
+    background-color: #ffffff;
+    color: #333333;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    padding: 8px 36px 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333333' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    transition: border-color 0.2s;
+}
+
+select[name="filtro_pista"]:hover,
+select[name="filtro_pista"]:focus {
+    border-color: #999999;
+    outline: none;
+}
+
+input[name="filtro_fecha"] {
+    background-color: #ffffff;
+    color: #333333;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+input[name="filtro_fecha"]:hover,
+input[name="filtro_fecha"]:focus {
+    border-color: #999999;
+    outline: none;
+}
