@@ -188,10 +188,10 @@ body {
 }
 .cards-val { font-size: 38px; font-weight: 900; line-height: 1; }
 .cards-label { font-size: 14px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-.cards-blue .cards-val   { color: #70a5ff; }
-.cards-green .cards-val  { color: #70a5ff; }
-.cards-purple .cards-val { color: #70a5ff; }
-.cards-orange .cards-val { color: #70a5ff; }
+.cards-blue .cards-val   { color: #4588fd; }
+.cards-green .cards-val  { color: #4588fd; }
+.cards-purple .cards-val { color: #4588fd; }
+.cards-orange .cards-val { color: #4588fd; }
 
 /* ── Section Cards ────────────────────────────────────────── */
 .section-card {
@@ -401,4 +401,33 @@ input[name="filtro_fecha"]:focus {
     outline: none;
 }
 
+/* Paginador */
+
+/* Paginador */
+.paginador {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: 1rem 0 .5rem;
+    flex-wrap: wrap;
+}
+.pag-info {
+    font-size: .85rem;
+    color: #888;
+    margin-right: .5rem;
+}
+.pag-btn {
+    display: inline-block;
+    padding: .35rem .75rem;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background: #fff;
+    color: #333;
+    text-decoration: none;
+    font-size: .875rem;
+    transition: background .15s;
+}
+.pag-btn:hover { background: #f0f0f0; }
+.pag-activo    { background: #4f46e5; color: #fff; border-color: #4f46e5; font-weight: 700; }
+.pag-disabled  { color: #bbb; border-color: #eee; cursor: default; }
 

@@ -272,9 +272,28 @@ if ($seccion === 'usuarios') {
     }
 
     $sql .= " GROUP BY u.id ORDER BY u.nombre";
+
+    // Paginador de la pagina de usuarios
+    $por_pagina = 15;
+    $pagina_actual = max(1, (int)($_GET['pagina'] ?? 1));
+    $stmt_total = $pdo->prepare("SELECT COUNT(*) FROM ($sql) AS sub");
+    $stmt_total->execute($params);
+    $total = (int)$stmt_total->fetchColumn();
+    $total_paginas = max(1, (int)ceil($total / $por_pagina));
+    $pagina_actual = min($pagina_actual, $total_paginas);
+    $offset = ($pagina_actual - 1) * $por_pagina;
+
+    $sql .= " LIMIT :limit OFFSET :offset";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute($params);
+    foreach ($params as $key => $val) $stmt->bindValue($key, $val);
+    $stmt->bindValue(':limit',  $por_pagina, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset,     PDO::PARAM_INT);
+    $stmt->execute();
     $datos['lista'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $datos['pagina_actual']  = $pagina_actual;
+    $datos['total_paginas']  = $total_paginas;
+    $datos['total']          = $total;
 
     $datos['filtro_id'] = $filtro_id;
     $datos['filtro_nombre'] = $filtro_nombre;
@@ -324,15 +343,70 @@ if ($seccion === 'reservas') {
     }
 
     $sql .= " ORDER BY r.fecha DESC, r.hora_inicio";
+
+    // Paginador de la pagina de reservas
+    $por_pagina = 15;
+    $pagina_actual = max(1, (int)($_GET['pagina'] ?? 1));
+    $stmt_total = $pdo->prepare("SELECT COUNT(*) FROM ($sql) AS sub");
+    $stmt_total->execute($params);
+    $total = (int)$stmt_total->fetchColumn();
+    $total_paginas = max(1, (int)ceil($total / $por_pagina));
+    $pagina_actual = min($pagina_actual, $total_paginas);
+    $offset = ($pagina_actual - 1) * $por_pagina;
+
+    $sql .= " LIMIT :limit OFFSET :offset";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute($params);
+    foreach ($params as $key => $val) $stmt->bindValue($key, $val);
+    $stmt->bindValue(':limit',  $por_pagina, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset,     PDO::PARAM_INT);
+    $stmt->execute();
     $datos['lista'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $datos['pagina_actual']  = $pagina_actual;
+    $datos['total_paginas']  = $total_paginas;
+    $datos['total']          = $total;
 
     $datos['filtro_fecha'] = $filtro_fecha;
     $datos['filtro_nombre'] = $filtro_nombre;
     $datos['filtro_pista']  = $filtro_pista;
 
 }
+
+//Funcion para el paginador, recibe un array con los datos de paginacion, la seccion actual y un array con los filtros
+function paginador(array $datos, string $seccion, array $filtros = []): string {
+    if ($datos['total_paginas'] <= 1) return '';
+    $p   = $datos['pagina_actual'];
+    $max = $datos['total_paginas'];
+
+    $base = "admin.php?sec={$seccion}";
+    foreach ($filtros as $k => $v) {
+        if ($v !== '') $base .= '&' . urlencode($k) . '=' . urlencode($v);
+    }
+
+    $html = '<div class="paginador">';
+    $html .= '<span class="pag-info">Página ' . $p . ' de ' . $max . '</span>';
+
+    if ($p > 1)
+        $html .= '<a class="pag-btn" href="' . $base . '&pagina=' . ($p-1) . '">‹ Anterior</a>';
+    else
+        $html .= '<span class="pag-btn pag-disabled">‹ Anterior</span>';
+
+    $desde = max(1, $p - 2);
+    $hasta = min($max, $p + 2);
+    for ($i = $desde; $i <= $hasta; $i++) {
+        $activo = $i === $p ? ' pag-activo' : '';
+        $html .= '<a class="pag-btn' . $activo . '" href="' . $base . '&pagina=' . $i . '">' . $i . '</a>';
+    }
+
+    if ($p < $max)
+        $html .= '<a class="pag-btn" href="' . $base . '&pagina=' . ($p+1) . '">Siguiente ›</a>';
+    else
+        $html .= '<span class="pag-btn pag-disabled">Siguiente ›</span>';
+
+    $html .= '</div>';
+    return $html;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -627,6 +701,11 @@ if ($seccion === 'reservas') {
 
                     <?php endforeach; ?>
                     </tbody>
+                    <?= paginador($datos, 'reservas', [
+                        'filtro_fecha'   => $datos['filtro_fecha'],
+                        'filtro_nombre'  => $datos['filtro_nombre'],
+                        'filtro_pista'   => $datos['filtro_pista'],
+                    ]) ?>
                 </table>
             </div>
         </div>
@@ -761,6 +840,10 @@ if ($seccion === 'reservas') {
                     <?php endforeach; ?>
                     </tbody>
                 </table>
+                <?= paginador($datos, 'usuarios', [
+                    'filtro_nombre' => $datos['filtro_nombre'],
+                    'filtro_email'  => $datos['filtro_email'],
+                ]) ?>
             </div>
         </div>
 
