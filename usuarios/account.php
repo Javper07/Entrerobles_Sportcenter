@@ -1,22 +1,246 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['usuario_id'])) {
     header('Location: ../login.html');
     exit;
 }
-?><!DOCTYPE html>
+
+require_once '../comun/db.php';
+
+function setFlashMessage(string $type, string $text): void
+{
+    $_SESSION['account_flash'] = ['type' => $type, 'text' => $text];
+}
+
+function getFlashMessage(): ?array
+{
+    if (empty($_SESSION['account_flash'])) {
+        return null;
+    }
+
+    $flash = $_SESSION['account_flash'];
+    unset($_SESSION['account_flash']);
+    return $flash;
+}
+
+function obtenerReservas(PDO $pdo, int $usuarioId): array
+{
+    $stmt = $pdo->prepare(
+        "SELECT r.id, r.fecha, r.hora_inicio, r.hora_fin, r.participantes, r.observaciones, r.estado, i.nombre AS instalacion_nombre, r.instalacion_id
+         FROM reservas r
+         JOIN instalaciones i ON r.instalacion_id = i.id
+         WHERE r.usuario_id = :usuario_id
+         ORDER BY r.fecha DESC, r.hora_inicio DESC"
+    );
+    $stmt->execute([':usuario_id' => $usuarioId]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function obtenerReservaPorId(PDO $pdo, int $usuarioId, int $reservaId): ?array
+{
+    $stmt = $pdo->prepare(
+        "SELECT r.id, r.fecha, r.hora_inicio, r.hora_fin, r.participantes, r.observaciones, r.estado, i.nombre AS instalacion_nombre, r.instalacion_id
+         FROM reservas r
+         JOIN instalaciones i ON r.instalacion_id = i.id
+         WHERE r.id = :id AND r.usuario_id = :usuario_id"
+    );
+    $stmt->execute([':id' => $reservaId, ':usuario_id' => $usuarioId]);
+    $reserva = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $reserva === false ? null : $reserva;
+}
+
+function existeConflicto(PDO $pdo, int $instalacionId, string $fecha, string $horaInicio, string $horaFin, int $excluirReservaId = null): bool
+{
+    $sql = "SELECT id FROM reservas
+            WHERE instalacion_id = :instalacion_id
+              AND fecha = :fecha
+              AND estado != 'cancelada'
+              AND hora_inicio < :hora_fin
+              AND hora_fin > :hora_inicio";
+
+    if ($excluirReservaId !== null) {
+        $sql .= ' AND id != :excluir_id';
+    }
+
+    $stmt = $pdo->prepare($sql);
+    $params = [
+        ':instalacion_id' => $instalacionId,
+        ':fecha' => $fecha,
+        ':hora_inicio' => $horaInicio,
+        ':hora_fin' => $horaFin,
+    ];
+
+    if ($excluirReservaId !== null) {
+        $params[':excluir_id'] = $excluirReservaId;
+    }
+
+    $stmt->execute($params);
+    return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
+}
+
+$pdo = getDbConnection();
+$usuarioId = (int) $_SESSION['usuario_id'];
+$usuarioNombre = htmlspecialchars($_SESSION['usuario_nombre'] ?? '', ENT_QUOTES, 'UTF-8');
+$usuarioApellidos = htmlspecialchars($_SESSION['usuario_apellidos'] ?? '', ENT_QUOTES, 'UTF-8');
+$usuarioEmail = htmlspecialchars($_SESSION['usuario_email'] ?? '', ENT_QUOTES, 'UTF-8');
+
+$flash = getFlashMessage();
+$errores = [];
+$editReserva = null;
+$mostrarFormularioEdicion = false;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $accion = $_POST['action'] ?? '';
+    $reservaId = isset($_POST['reserva_id']) ? (int) $_POST['reserva_id'] : 0;
+
+    if ($accion === 'cancelar') {
+        if ($reservaId <= 0) {
+            setFlashMessage('error', 'ID de reserva incorrecto.');
+        } else {
+            $reserva = obtenerReservaPorId($pdo, $usuarioId, $reservaId);
+            if (!$reserva) {
+                setFlashMessage('error', 'Reserva no encontrada.');
+            } elseif ($reserva['estado'] === 'cancelada') {
+                setFlashMessage('error', 'La reserva ya está cancelada.');
+            } else {
+                $stmt = $pdo->prepare("UPDATE reservas SET estado = 'cancelada' WHERE id = :id AND usuario_id = :usuario_id");
+                $stmt->execute([':id' => $reservaId, ':usuario_id' => $usuarioId]);
+                setFlashMessage('success', 'Reserva cancelada correctamente.');
+            }
+        }
+
+        header('Location: account.php');
+        exit;
+    }
+
+    if ($accion === 'eliminar') {
+        if ($reservaId <= 0) {
+            setFlashMessage('error', 'ID de reserva incorrecto.');
+        } else {
+            $reserva = obtenerReservaPorId($pdo, $usuarioId, $reservaId);
+            if (!$reserva) {
+                setFlashMessage('error', 'Reserva no encontrada.');
+            } else {
+                $stmt = $pdo->prepare('DELETE FROM reservas WHERE id = :id AND usuario_id = :usuario_id');
+                $stmt->execute([':id' => $reservaId, ':usuario_id' => $usuarioId]);
+                setFlashMessage('success', 'Reserva eliminada correctamente.');
+            }
+        }
+
+        header('Location: account.php');
+        exit;
+    }
+
+    if ($accion === 'guardar') {
+        $fecha = trim($_POST['fecha'] ?? '');
+        $horaInicio = trim($_POST['hora_inicio'] ?? '');
+        $horaFin = trim($_POST['hora_fin'] ?? '');
+        $participantes = trim($_POST['participantes'] ?? '');
+        $observaciones = trim($_POST['observaciones'] ?? '');
+
+        if ($reservaId <= 0) {
+            $errores[] = 'ID de reserva incorrecto.';
+        }
+
+        if ($fecha === '' || DateTime::createFromFormat('Y-m-d', $fecha) === false) {
+            $errores[] = 'La fecha no es válida.';
+        }
+
+        if ($horaInicio === '' || DateTime::createFromFormat('H:i', $horaInicio) === false) {
+            $errores[] = 'La hora de inicio no es válida.';
+        }
+
+        if ($horaFin === '' || DateTime::createFromFormat('H:i', $horaFin) === false) {
+            $errores[] = 'La hora de fin no es válida.';
+        }
+
+        if ($horaInicio !== '' && $horaFin !== '' && $horaFin <= $horaInicio) {
+            $errores[] = 'La hora de fin debe ser posterior a la hora de inicio.';
+        }
+
+        $participantes = filter_var($participantes, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        if ($participantes === false) {
+            $errores[] = 'El número de participantes debe ser un valor entero positivo.';
+        }
+
+        $reserva = obtenerReservaPorId($pdo, $usuarioId, $reservaId);
+        if (!$reserva) {
+            $errores[] = 'Reserva no encontrada.';
+        }
+
+        if (empty($errores) && $reserva && existeConflicto($pdo, (int) $reserva['instalacion_id'], $fecha, $horaInicio, $horaFin, $reservaId)) {
+            $errores[] = 'Ya existe otra reserva en ese horario para la misma instalación.';
+        }
+
+        if (empty($errores) && $reserva) {
+            $stmt = $pdo->prepare(
+                'UPDATE reservas SET fecha = :fecha, hora_inicio = :hora_inicio, hora_fin = :hora_fin, participantes = :participantes, observaciones = :observaciones WHERE id = :id AND usuario_id = :usuario_id'
+            );
+            $stmt->execute([
+                ':fecha' => $fecha,
+                ':hora_inicio' => $horaInicio,
+                ':hora_fin' => $horaFin,
+                ':participantes' => $participantes,
+                ':observaciones' => $observaciones,
+                ':id' => $reservaId,
+                ':usuario_id' => $usuarioId,
+            ]);
+
+            setFlashMessage('success', 'Reserva actualizada correctamente.');
+            header('Location: account.php');
+            exit;
+        }
+
+        $mostrarFormularioEdicion = true;
+        $editReserva = [
+            'id' => $reservaId,
+            'fecha' => htmlspecialchars($fecha, ENT_QUOTES, 'UTF-8'),
+            'hora_inicio' => htmlspecialchars($horaInicio, ENT_QUOTES, 'UTF-8'),
+            'hora_fin' => htmlspecialchars($horaFin, ENT_QUOTES, 'UTF-8'),
+            'participantes' => htmlspecialchars((string) $participantes, ENT_QUOTES, 'UTF-8'),
+            'observaciones' => htmlspecialchars($observaciones, ENT_QUOTES, 'UTF-8'),
+            'instalacion_nombre' => $reserva['instalacion_nombre'] ?? '',
+            'estado' => $reserva['estado'] ?? '',
+        ];
+    }
+}
+
+if (!$mostrarFormularioEdicion && isset($_GET['editar'])) {
+    $editarId = (int) $_GET['editar'];
+    if ($editarId > 0) {
+        $editReserva = obtenerReservaPorId($pdo, $usuarioId, $editarId);
+        if ($editReserva) {
+            $mostrarFormularioEdicion = true;
+        } else {
+            setFlashMessage('error', 'No se encontró la reserva para editar.');
+            header('Location: account.php');
+            exit;
+        }
+    }
+}
+
+$reservas = obtenerReservas($pdo, $usuarioId);
+?>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="../Styles/indexStyles.css">
-    <link rel="stylesheet" href="../Styles/accountStyles.css">
+    <link rel="stylesheet" href="../styles/indexStyles.css">
+    <link rel="stylesheet" href="../styles/accountStyles.css">
+    <style>
+        .message { border-radius: 8px; padding: 15px 18px; margin: 20px 0; }
+        .message-success { background: #16a34a; color: #fff; }
+        .message-error { background: #dc2626; color: #fff; }
+        .message ul { margin: 0; padding-left: 1.2em; }
+        .message li { margin-bottom: 6px; }
+        .edit-reserva-form { background: #232525; padding: 24px; border-radius: 12px; }
+    </style>
     <title>Mi Cuenta — Polideportivo Entrerobles</title>
 </head>
 <body>
-
     <div id="header">
         <img src="../images/logoERwhite.png" alt="Logo" id="logo_escudo">
         <h1>POLIDEPORTIVO ENTREROBLES</h1>
@@ -28,8 +252,8 @@ if (!isset($_SESSION['usuario_id'])) {
             <div class="HeaderButtonsGroup2">
                 <a href="../index.html#horariosTitle" class="HeaderButton">HORARIOS</a>
             </div>
-            <div class="AccountButtons" id="accountButtons">
-                <span class="AccountHeaderButton">👤 <?php echo htmlspecialchars($_SESSION['usuario_nombre'] ?? ''); ?></span>
+            <div class="AccountButtons">
+                <span class="AccountHeaderButton">👤 <?= $usuarioNombre ?></span>
                 <a href="logout.php" class="AccountHeaderButton">CERRAR SESIÓN</a>
             </div>
         </div>
@@ -37,177 +261,159 @@ if (!isset($_SESSION['usuario_id'])) {
 
     <main class="account-container">
         <div class="account-header">
-            <h1>Mi Cuenta</h1>
-            <p><?php echo htmlspecialchars($_SESSION['usuario_email'] ?? ''); ?></p>
+            <h1><?= $usuarioNombre ?> <?= $usuarioApellidos ?></h1>
+            <p><?= $usuarioEmail ?></p>
         </div>
 
-        <div id="toast" class="toast" style="display:none;"></div>
+        <?php if ($flash): ?>
+            <div class="message message-<?= $flash['type'] ?>">
+                <?= htmlspecialchars($flash['text'], ENT_QUOTES, 'UTF-8') ?>
+            </div>
+        <?php endif; ?>
 
-        <div class="account-content">
+        <?php if ($mostrarFormularioEdicion && $editReserva): ?>
             <section class="reservas-section">
                 <div class="reservas-section-header">
-                    <h2>Mis Reservas</h2>
-                    <a href="../reservas/reservations.php" class="btn-primary">+ Nueva reserva</a>
+                    <h2>Editar reserva</h2>
+                    <a href="account.php" class="btn-secondary">Volver a mis reservas</a>
                 </div>
-                <div id="reservasContainer" class="reservas-grid"></div>
-                <div id="noReservas" class="no-reservas" style="display:none;">
-                    <p>No tienes ninguna reserva registrada.</p>
-                    <a href="../reservas/reservations.php" class="btn-primary">Crear nueva reserva</a>
-                </div>
+
+                <?php if (!empty($errores)): ?>
+                    <div class="message message-error">
+                        <ul>
+                            <?php foreach ($errores as $error): ?>
+                                <li><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+
+                <form method="post" action="account.php" class="edit-reserva-form">
+                    <input type="hidden" name="action" value="guardar">
+                    <input type="hidden" name="reserva_id" value="<?= $editReserva['id'] ?>">
+
+                    <div class="form-group">
+                        <label>Instalación</label>
+                        <input type="text" value="<?= htmlspecialchars($editReserva['instalacion_nombre'], ENT_QUOTES, 'UTF-8') ?>" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha</label>
+                        <input type="date" name="fecha" value="<?= $editReserva['fecha'] ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Hora de inicio</label>
+                        <input type="time" name="hora_inicio" value="<?= $editReserva['hora_inicio'] ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Hora de fin</label>
+                        <input type="time" name="hora_fin" value="<?= $editReserva['hora_fin'] ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Participantes</label>
+                        <input type="number" name="participantes" min="1" value="<?= $editReserva['participantes'] ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Observaciones</label>
+                        <textarea name="observaciones"><?= htmlspecialchars($editReserva['observaciones'], ENT_QUOTES, 'UTF-8') ?></textarea>
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="submit" class="btn-primary">Guardar cambios</button>
+                        <a href="account.php" class="btn-secondary">Cancelar</a>
+                    </div>
+                </form>
             </section>
-        </div>
+        <?php else: ?>
+            <div class="account-content">
+                <section class="reservas-section">
+                    <div class="reservas-section-header">
+                        <h2>Mis Reservas</h2>
+                        <a href="../reservas/reservations.php" class="btn-primary">+ Nueva reserva</a>
+                    </div>
+
+                    <?php if (count($reservas) === 0): ?>
+                        <div class="no-reservas">
+                            <p>No tienes ninguna reserva registrada.</p>
+                            <a href="../reservas/reservations.php" class="btn-primary">Crear nueva reserva</a>
+                        </div>
+                    <?php else: ?>
+                        <div class="reservas-grid">
+                            <?php foreach ($reservas as $reserva): ?>
+                                <?php $cancelada = $reserva['estado'] === 'cancelada'; ?>
+                                <div class="reserva-card<?= $cancelada ? ' reserva-card--cancelada' : '' ?>">
+                                    <div class="reserva-header">
+                                        <h3><?= htmlspecialchars($reserva['instalacion_nombre'], ENT_QUOTES, 'UTF-8') ?></h3>
+                                        <span class="estado <?= $cancelada ? 'estado-cancelada' : 'estado-activa' ?>">
+                                            <?= $cancelada ? 'Cancelada' : 'Activa' ?>
+                                        </span>
+                                    </div>
+                                    <div class="reserva-details">
+                                        <p><strong>Fecha:</strong> <?= htmlspecialchars(date('d/m/Y', strtotime($reserva['fecha'])), ENT_QUOTES, 'UTF-8') ?></p>
+                                        <p><strong>Horario:</strong> <?= htmlspecialchars(substr($reserva['hora_inicio'], 0, 5), ENT_QUOTES, 'UTF-8') ?> – <?= htmlspecialchars(substr($reserva['hora_fin'], 0, 5), ENT_QUOTES, 'UTF-8') ?></p>
+                                        <p><strong>Participantes:</strong> <?= htmlspecialchars($reserva['participantes'], ENT_QUOTES, 'UTF-8') ?></p>
+                                        <?php if (trim($reserva['observaciones']) !== ''): ?>
+                                            <p><strong>Observaciones:</strong> <?= nl2br(htmlspecialchars($reserva['observaciones'], ENT_QUOTES, 'UTF-8')) ?></p>
+                                        <?php endif; ?>
+                                    </div>
+                                    <?php if (!$cancelada): ?>
+                                        <div class="reserva-actions">
+                                            <a href="account.php?editar=<?= $reserva['id'] ?>" class="btn-edit"><i class="fas fa-edit"></i> Modificar</a>
+                                            <form method="post" action="account.php">
+                                                <input type="hidden" name="action" value="cancelar">
+                                                <input type="hidden" name="reserva_id" value="<?= $reserva['id'] ?>">
+                                                <button type="submit" class="btn-cancel">Cancelar</button>
+                                            </form>
+                                            <form method="post" action="account.php">
+                                                <input type="hidden" name="action" value="eliminar">
+                                                <input type="hidden" name="reserva_id" value="<?= $reserva['id'] ?>">
+                                                <button type="submit" class="btn-delete">Eliminar</button>
+                                            </form>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </section>
+            </div>
+        <?php endif; ?>
     </main>
 
-    <!-- Modal editar -->
-    <div id="editModal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <span class="close-btn" id="closeEdit">&times;</span>
-            <h2>Editar Reserva</h2>
-            <form id="editForm">
-                <input type="hidden" id="editReservaId">
-                <div class="form-group"><label>Instalación</label><input type="text" id="editInstalacion" disabled></div>
-                <div class="form-group"><label>Fecha</label><input type="date" id="editFecha" required></div>
-                <div class="form-group"><label>Hora Inicio</label><input type="time" id="editHoraInicio" required></div>
-                <div class="form-group"><label>Hora Fin</label><input type="time" id="editHoraFin" required></div>
-                <div class="form-group"><label>Participantes</label><input type="number" id="editParticipantes" min="1" required></div>
-                <div class="form-group"><label>Observaciones</label><textarea id="editObservaciones"></textarea></div>
-                <div class="modal-buttons">
-                    <button type="submit" class="btn-primary">Guardar</button>
-                    <button type="button" class="btn-secondary" id="cancelEdit">Cancelar</button>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-row">
+                <div class="footer-links">
+                    <h4>CONTÁCTANOS</h4>
+                    <ul>
+                        <li><a href="#">123-456-7890</a></li>
+                        <li><a href="#">info@aytoentrerobles.com</a></li>
+                        <li><a href="#">Calle Principal, 123, Entrerobles</a></li>
+                    </ul>
                 </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal confirmar -->
-    <div id="confirmModal" class="modal" style="display:none;">
-        <div class="modal-content modal-confirm">
-            <p id="confirmMsg" class="confirm-msg"></p>
-            <div class="modal-buttons">
-                <button id="confirmOk" class="btn-danger">Confirmar</button>
-                <button id="confirmNo" class="btn-secondary">Volver</button>
+                <div class="footer-links">
+                    <h4>AYUDA</h4>
+                    <ul>
+                        <li><a href="#">Preguntas Frecuentes</a></li>
+                        <li><a href="#">Compras</a></li>
+                        <li><a href="#">Envios</a></li>
+                        <li><a href="#">Sugerencias</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>SÍGUENOS</h4>
+                    <ul class="social-icons">
+                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+                <div class="footer-logo">
+                    <img src="../images/logoERwhite.png" alt="Logo del Ayuntamiento de Entrerobles">
+                </div>
             </div>
         </div>
-    </div>
-
-    <script>
-        let reservas = [];
-
-        document.addEventListener('DOMContentLoaded', cargarReservas);
-
-        function toast(msg, tipo) {
-            const el = document.getElementById('toast');
-            el.textContent = (tipo === 'ok' ? '✅ ' : '❌ ') + msg;
-            el.className = 'toast toast--' + tipo;
-            el.style.display = 'block';
-            setTimeout(() => el.style.display = 'none', 3500);
-        }
-
-        function cargarReservas() {
-            fetch('../reservas/get_reservas.php', { credentials: 'include' })
-                .then(r => r.json())
-                .then(data => { reservas = data; mostrarReservas(); })
-                .catch(() => toast('Error al cargar reservas', 'error'));
-        }
-
-        function mostrarReservas() {
-            const container  = document.getElementById('reservasContainer');
-            const noReservas = document.getElementById('noReservas');
-            if (reservas.length === 0) {
-                container.style.display = 'none';
-                noReservas.style.display = 'block';
-                return;
-            }
-            container.style.display = '';
-            noReservas.style.display = 'none';
-            container.innerHTML = '';
-            reservas.forEach(r => container.appendChild(crearTarjeta(r)));
-        }
-
-        function crearTarjeta(r) {
-            const div = document.createElement('div');
-            const cancelada = r.estado === 'cancelada';
-            div.className = 'reserva-card' + (cancelada ? ' reserva-card--cancelada' : '');
-            const fecha = new Date(r.fecha + 'T00:00:00').toLocaleDateString('es-ES', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-            div.innerHTML = `
-                <div class="reserva-header">
-                    <h3>${r.instalacion_nombre}</h3>
-                    <span class="estado ${cancelada ? 'estado-cancelada' : 'estado-activa'}">${cancelada ? 'Cancelada' : 'Activa'}</span>
-                </div>
-                <div class="reserva-details">
-                    <p><strong>Fecha:</strong> ${fecha}</p>
-                    <p><strong>Horario:</strong> ${r.hora_inicio.slice(0,5)} – ${r.hora_fin.slice(0,5)}</p>
-                    <p><strong>Participantes:</strong> ${r.participantes}</p>
-                    ${r.observaciones ? `<p><strong>Observaciones:</strong> ${r.observaciones}</p>` : ''}
-                </div>
-                ${!cancelada ? `
-                <div class="reserva-actions">
-                    <button class="btn-edit" onclick="abrirModalEditar(${r.id})"><i class="fas fa-edit"></i> Modificar</button>
-                    <button class="btn-cancel" onclick="pedirCancelar(${r.id})"><i class="fas fa-ban"></i> Cancelar</button>
-                    <button class="btn-delete" onclick="pedirEliminar(${r.id})"><i class="fas fa-trash"></i> Eliminar</button>
-                </div>` : ''}
-            `;
-            return div;
-        }
-
-        function abrirConfirm(msg, onOk) {
-            document.getElementById('confirmMsg').textContent = msg;
-            document.getElementById('confirmModal').style.display = 'flex';
-            document.getElementById('confirmOk').onclick = () => { document.getElementById('confirmModal').style.display = 'none'; onOk(); };
-            document.getElementById('confirmNo').onclick  = () => { document.getElementById('confirmModal').style.display = 'none'; };
-        }
-
-        function pedirCancelar(id) { abrirConfirm('¿Cancelar esta reserva?', () => cancelarReserva(id)); }
-        function pedirEliminar(id) { abrirConfirm('¿Eliminar esta reserva? No se puede deshacer.', () => eliminarReserva(id)); }
-
-        function cancelarReserva(id) {
-            fetch('../reservas/cancelar_reserva.php', { method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include', body: JSON.stringify({reserva_id:id}) })
-            .then(r => r.json()).then(d => { toast(d.success ? 'Reserva cancelada.' : d.error, d.success ? 'ok' : 'error'); if(d.success) cargarReservas(); });
-        }
-
-        function eliminarReserva(id) {
-            fetch('../reservas/eliminar_reserva.php', { method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include', body: JSON.stringify({reserva_id:id}) })
-            .then(r => r.json()).then(d => { toast(d.success ? 'Reserva eliminada.' : d.error, d.success ? 'ok' : 'error'); if(d.success) cargarReservas(); });
-        }
-
-        function abrirModalEditar(id) {
-            const r = reservas.find(x => x.id === id);
-            if (!r) return;
-            document.getElementById('editReservaId').value     = id;
-            document.getElementById('editInstalacion').value   = r.instalacion_nombre;
-            document.getElementById('editFecha').value         = r.fecha;
-            document.getElementById('editHoraInicio').value    = r.hora_inicio.slice(0,5);
-            document.getElementById('editHoraFin').value       = r.hora_fin.slice(0,5);
-            document.getElementById('editParticipantes').value = r.participantes;
-            document.getElementById('editObservaciones').value = r.observaciones || '';
-            document.getElementById('editModal').style.display = 'flex';
-        }
-
-        document.getElementById('closeEdit').onclick  = () => document.getElementById('editModal').style.display = 'none';
-        document.getElementById('cancelEdit').onclick = () => document.getElementById('editModal').style.display = 'none';
-
-        document.getElementById('editForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            fetch('../reservas/actualizar_reserva.php', {
-                method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include',
-                body: JSON.stringify({
-                    reserva_id: document.getElementById('editReservaId').value,
-                    fecha: document.getElementById('editFecha').value,
-                    hora_inicio: document.getElementById('editHoraInicio').value,
-                    hora_fin: document.getElementById('editHoraFin').value,
-                    participantes: document.getElementById('editParticipantes').value,
-                    observaciones: document.getElementById('editObservaciones').value
-                })
-            }).then(r => r.json()).then(d => {
-                if (d.success) { document.getElementById('editModal').style.display = 'none'; toast('Reserva actualizada.', 'ok'); cargarReservas(); }
-                else toast(d.error || 'Error', 'error');
-            });
-        });
-
-        window.addEventListener('click', e => {
-            if (e.target.id === 'editModal')    document.getElementById('editModal').style.display    = 'none';
-            if (e.target.id === 'confirmModal') document.getElementById('confirmModal').style.display = 'none';
-        });
-    </script>
+        <div class="footer-divider"></div>
+        <p class="bottom-text">Por un deporte más saludable y accesible para todos.</p>
+    </footer>
 </body>
 </html>

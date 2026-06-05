@@ -28,16 +28,15 @@ try {
     // ── RESUMEN ───────────────────────────────────────────────────────────
     if ($seccion === 'resumen') {
 
-        // Una sola query con CTEs para todos las reservas activas y listas
-        //los kpis son 
+        // Una sola query con CTEs para las métricas y reservas de hoy
         $stmt = $pdo->query("
             WITH
             reservasActivas AS (
                 SELECT
-                    COUNT(*) FILTER (WHERE estado != 'cancelada')                              AS reservas_activas,
-                    COUNT(*) FILTER (WHERE fecha = CURRENT_DATE AND estado != 'cancelada')     AS reservas_hoy,
-                    (SELECT COUNT(*) FROM usuarios)                                            AS usuarios,
-                    (SELECT COUNT(*) FROM contacto WHERE leido = FALSE)                        AS mensajes_sin_leer
+                    COUNT(*) FILTER (WHERE estado != 'cancelada') AS reservas_activas,
+                    COUNT(*) FILTER (WHERE fecha = CURRENT_DATE AND estado != 'cancelada') AS reservas_hoy,
+                    (SELECT COUNT(*) FROM usuarios) AS usuarios,
+                    (SELECT COUNT(*) FROM contacto WHERE leido = FALSE) AS mensajes_sin_leer
                 FROM reservas
             ),
             hoy AS (
@@ -45,23 +44,20 @@ try {
                        i.nombre AS instalacion,
                        r.hora_inicio, r.hora_fin, r.participantes, r.estado
                 FROM reservas r
-                JOIN usuarios u    ON r.usuario_id     = u.id
+                JOIN usuarios u      ON r.usuario_id     = u.id
                 JOIN instalaciones i ON r.instalacion_id = i.id
                 WHERE r.fecha = CURRENT_DATE
                 ORDER BY r.hora_inicio ASC
-            ),
-            
+            )
             SELECT
-                (SELECT row_to_json(k) FROM kpi k)          AS kpi,
-                (SELECT json_agg(h) FROM hoy h)             AS reservas_hoy_lista,
-                (SELECT json_agg(p) FROM proximas p)        AS proximas_reservas
+                (SELECT row_to_json(k) FROM reservasActivas k)          AS kpi,
+                (SELECT json_agg(h) FROM hoy h)                         AS reservas_hoy_lista
         ");
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $kpi            = json_decode($row['kpi'],              true);
-        $hoy_lista      = json_decode($row['reservas_hoy_lista'], true) ?? [];
-        $proximas       = json_decode($row['proximas_reservas'],  true) ?? [];
+        $hoy_lista      = json_decode($row['reservas_hoy_lista'], true) ?? []; 
 
         // Marcar mensajes como leídos tras leerlos
         try {
@@ -74,7 +70,6 @@ try {
             'usuarios'           => (int)($kpi['usuarios']           ?? 0),
             'mensajes_sin_leer'  => (int)($kpi['mensajes_sin_leer']  ?? 0),
             'reservas_hoy_lista' => $hoy_lista,
-            'proximas_reservas'  => $proximas,
         ]);
 
     // ── RESERVAS ──────────────────────────────────────────────────────────
@@ -82,9 +77,9 @@ try {
 
         $stmt = $pdo->query("
             SELECT r.id,
-                   u.nombre    AS usuario,
+                   u.nombre AS usuario,
                    u.email,
-                   i.nombre    AS instalacion,
+                   i.nombre AS instalacion,
                    r.fecha,
                    r.hora_inicio,
                    r.hora_fin,

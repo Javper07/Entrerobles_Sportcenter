@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Estilos de formulario de login y estilos generales compartidos. -->
     <link rel="stylesheet" href="Styles/registerLoginStyles.css">
     <link rel="stylesheet" href="Styles/indexStyles.css">
 
@@ -12,7 +13,7 @@
     <script src="comun/header.js"></script>
 </head>
 <body>
-    <!--Cabecera de la web-->
+    <!-- Cabecera de la web: fija y común en todas las páginas. -->
     <div id="header"> 
         <img src="images/logoERwhite.png" alt="Logo Escudo" id="logo_escudo">
         <h1>POLIDEPORTIVO ENTREROBLES</h1>
@@ -34,6 +35,7 @@
             </div>
         </div>
     </div>
+    <!-- Contenido principal de login: el formulario permite iniciar sesión. -->
     <div id="login-container"> 
         <img id="unknownUserImage" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Usuario Desconocido">     
         <div class="login-form">
@@ -41,10 +43,6 @@
             <form action="usuarios/login.php" method="POST">
                 <input type="email" name="usuario" placeholder="Correo" required>
                 <input type="password" name="password" placeholder="Contraseña" required>
-                <div class="remember-container">
-                   <input type="checkbox" id="remember-me" name="remember">
-                    <label for="remember-me">Recuérdame</label>
-                </div>
                 <button type="submit" class="submit">Ingresar</button>
             </form>
         </div>
@@ -54,6 +52,7 @@
         </div>
 
     </div>
+    <!-- Footer en login: igual que el del inicio para consistencia visual. -->
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-row">

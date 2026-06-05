@@ -1,4 +1,6 @@
-// header.js - Manejo dinámico del header según sesión del usuario
+// header.js - Manejo dinámico del header según sesión del usuario.
+// 1) Consulta al servidor para ver si el usuario está logueado.
+// 2) Cambia los botones de la cabecera según el estado.
 
 console.log('[Header.js] Script cargado');
 
@@ -50,6 +52,7 @@ function verificarSesionYActualizarHeader() {
 }
 
 function actualizarHeaderLogueado(nombre, email) {
+    // Si la sesión existe, mostramos enlaces de cuenta y cerrar sesión.
     console.log('[Header.js] → Actualizando header como LOGUEADO');
     const accountButtons = document.getElementById('accountButtons');
     
@@ -68,6 +71,7 @@ function actualizarHeaderLogueado(nombre, email) {
 }
 
 function actualizarHeaderNoLogueado() {
+    // Si no hay sesión, mostramos botones de inicio y registro.
     console.log('[Header.js] → Actualizando header como NO LOGUEADO');
     const accountButtons = document.getElementById('accountButtons');
     
