@@ -186,7 +186,7 @@
 }
 
 .btn-secondary {
-    background-color: #999;
+    background-color: #303030;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -214,7 +214,7 @@
 }
 
 .modal-content {
-    background-color: white;
+    background-color: #232525;
     padding: 30px;
     border-radius: 10px;
     width: 90%;
@@ -226,7 +226,7 @@
 
 .modal-content h2 {
     margin-top: 0;
-    color: #333;
+    color: #e4e4e4;
     margin-bottom: 20px;
 }
 
@@ -252,7 +252,7 @@
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
-    color: #333;
+    color: #e6e6e6;
 }
 
 .form-group input,
@@ -338,7 +338,7 @@
     flex-wrap: wrap;
     gap: 12px;
 }
-.reservas-section-header h2 { margin: 0; border: none; }
+.reservas-section-header h2 { margin: 0; border: none; color: #e6e6e6; }
 
 /* Tarjeta cancelada */
 .reserva-card--cancelada { opacity: 0.65; }

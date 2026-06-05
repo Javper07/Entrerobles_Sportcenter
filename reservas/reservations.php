@@ -19,7 +19,7 @@ session_start();
     <script src="../comun/header.js"></script>
 </head>
 <body>
-    <!--Cabecera de la web-->
+    <!-- Cabecera de la web: muestra navegación y estado de sesión. -->
     <div id="header"> 
         <img src="../images/logoERwhite.png" alt="Logo Escudo" id="logo_escudo">
         <h1>POLIDEPORTIVO ENTREROBLES</h1>
@@ -41,6 +41,7 @@ session_start();
         </div>
     </div>
 
+    <!-- Contenido de reservas: formulario para crear reserva y panel lateral. -->
     <main class="main-content">
       <div class="container">
 
@@ -277,6 +278,7 @@ session_start();
       </div>
     </main>
 
+    <!-- Pie de página simple para cerrar la página de reserva. -->
     <footer>
         <div class="footer-content">
             <p>© 2024 Polideportivo Entrerobles. Todos los derechos reservados.</p>
@@ -286,6 +288,7 @@ session_start();
     </footer>
 
     <script>
+      // JavaScript de reservas: controla mensajes, selección de horario y envío.
       // ── Mensajes de éxito/error ──────────────────────────────────────
       const params = new URLSearchParams(window.location.search);
       if (params.get('reserva') === 'ok') {
@@ -401,6 +404,7 @@ session_start();
       }
 
       function cargarHoras() {
+        // Si la instalación o la fecha no están seleccionadas, no se muestran horarios.
         const instalacion = document.querySelector('input[name="instalacion"]:checked');
         const fecha = document.getElementById('fecha').value;
         const seccion = document.getElementById('horario-section');

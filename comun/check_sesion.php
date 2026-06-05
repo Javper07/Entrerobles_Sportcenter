@@ -1,5 +1,6 @@
 <?php
-// check_sesion.php — inyectado en páginas PHP para actualizar el header sin localStorage
+// check_sesion.php — inyecta datos de sesión PHP directamente en scripts JS.
+// Se usa en páginas PHP para actualizar el header antes de cualquier otra lógica.
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
 $isLoggedIn    = isset($_SESSION['usuario_id']);
@@ -32,6 +33,7 @@ $esAdmin       = !empty($_SESSION['es_admin']);
     }
 
     if (document.readyState === 'loading') {
+        // Si el DOM aún no está listo, esperamos a que se cargue.
         document.addEventListener('DOMContentLoaded', actualizarHeader);
     } else {
         actualizarHeader();

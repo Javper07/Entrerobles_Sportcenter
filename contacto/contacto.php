@@ -16,7 +16,7 @@ session_start();
 </head>
 <body>
 
-    <!-- Cabecera -->
+    <!-- Cabecera: menú superior reutilizado en todas las páginas. -->
     <div id="header">
         <img src="../images/logoERwhite.png" alt="Logo Escudo" id="logo_escudo">
         <h1>POLIDEPORTIVO ENTREROBLES</h1>
@@ -32,6 +32,7 @@ session_start();
         </div>
     </div>
 
+    <!-- Contenido principal: formulario de contacto y panel de información. -->
     <main class="contacto-main">
 
         <!-- Hero de la sección -->
@@ -168,6 +169,7 @@ session_start();
         <p class="bottom-text">Por un deporte más saludable y accesible para todos.</p>
     </footer>
 
+    <!-- Lógica cliente de contacto: pre-fill, validación y envío por AJAX. -->
     <script>
         // Pre-rellenar si hay sesión
         fetch('../usuarios/get_user_info.php', { credentials: 'include' })
